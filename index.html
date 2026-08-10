@@ -621,7 +621,7 @@
     currentListId = newList.id;
     saveLists();
     closeNewListScreen();
-    document.getElementById('scan-card').style.display='block';
+    updateScanCardVisibility();
     renderListsRow();
     renderChecklist();
   }
@@ -658,7 +658,7 @@
     currentListId = newList.id;
     saveLists();
     closeTypeScreen();
-    document.getElementById('scan-card').style.display='block';
+    updateScanCardVisibility();
     renderListsRow();
     renderChecklist();
   }
@@ -794,6 +794,10 @@
   }
 
   // ---------- rendering ----------
+  function updateScanCardVisibility(){
+    document.getElementById('scan-card').style.display = lists.length ? 'none' : 'block';
+  }
+
   function renderListsRow(){
     const row = document.getElementById('list-row');
     const countLabel = document.getElementById('list-count-label');
@@ -822,6 +826,8 @@
     addPill.textContent = '+ New';
     addPill.addEventListener('click', () => { closeEditList(); openNewListScreen(); });
     row.appendChild(addPill);
+
+    updateScanCardVisibility();
   }
 
   function openEditList(list){
@@ -1062,7 +1068,7 @@
   document.getElementById('scan-card').addEventListener('click', openNewListScreen);
   document.getElementById('nl-cancel-btn').addEventListener('click', () => {
     closeNewListScreen();
-    document.getElementById('scan-card').style.display='block';
+    updateScanCardVisibility();
   });
   document.getElementById('nl-scan-btn').addEventListener('click', startScanFromNewListScreen);
   document.getElementById('nl-type-btn').addEventListener('click', startTypeFromNewListScreen);
@@ -1070,7 +1076,7 @@
 
   document.getElementById('type-cancel-btn').addEventListener('click', () => {
     closeTypeScreen();
-    document.getElementById('scan-card').style.display='block';
+    updateScanCardVisibility();
   });
   document.getElementById('type-create-btn').addEventListener('click', createTypedList);
   document.getElementById('rescan-link').addEventListener('click', openNewListScreen);
@@ -1081,7 +1087,7 @@
   });
   document.getElementById('scan-error-retry').addEventListener('click', () => {
     document.getElementById('scan-error').style.display='none';
-    document.getElementById('scan-card').style.display='block';
+    updateScanCardVisibility();
   });
 
   document.getElementById('crop-cancel-btn').addEventListener('click', () => {
@@ -1089,7 +1095,7 @@
     if(pendingNewListName !== null){
       document.getElementById('photo-input').click(); // retake, keep the name already entered
     } else {
-      document.getElementById('scan-card').style.display='block';
+      updateScanCardVisibility();
     }
   });
   document.getElementById('crop-confirm-btn').addEventListener('click', () => {
