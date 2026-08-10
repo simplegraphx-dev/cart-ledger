@@ -949,8 +949,13 @@
       saveLists();
       renderChecklist();
     };
-    qtyInput.addEventListener('blur', () => setTimeout(commit, 0));
-    textInput.addEventListener('blur', () => setTimeout(commit, 0));
+    // Commit only once focus truly leaves both fields — moving from one field
+    // to the other (e.g. tapping quantity right after text) must not trigger it.
+    wrap.addEventListener('focusout', () => {
+      setTimeout(() => {
+        if(!wrap.contains(document.activeElement)) commit();
+      }, 0);
+    });
     qtyInput.addEventListener('keydown', e => { if(e.key==='Enter') textInput.focus(); });
     textInput.addEventListener('keydown', e => { if(e.key==='Enter') textInput.blur(); });
   }
