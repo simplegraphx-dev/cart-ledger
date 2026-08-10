@@ -263,7 +263,18 @@
     <p class="scan-title">Scan a list</p>
     <p class="scan-sub">Photograph a handwritten or printed list</p>
   </div>
+  <div class="rescan-link" id="type-list-link" style="text-align:center;margin-top:10px;">✏️ Or type a list instead</div>
   <input type="file" id="photo-input" accept="image/*" capture="environment">
+
+  <div id="type-screen" class="crop-screen" style="display:none;">
+    <p class="crop-hint">One item per line — quantities like "2 lbs" or "3x" are picked up automatically</p>
+    <input type="text" id="type-list-name" placeholder="List name (e.g. Costco)" style="width:100%;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid var(--grid-line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);margin-bottom:10px;">
+    <textarea id="type-list-textarea" placeholder="2 lbs chicken breast&#10;Milk&#10;3 apples&#10;Paper towels" style="width:100%;min-height:140px;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid var(--grid-line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);resize:vertical;"></textarea>
+    <div class="crop-actions">
+      <button class="crop-cancel" id="type-cancel-btn">Cancel</button>
+      <button class="crop-confirm" id="type-create-btn">Create list</button>
+    </div>
+  </div>
 
   <div id="crop-screen" class="crop-screen" style="display:none;">
     <p class="crop-hint">Drag the corners to frame just the list</p>
@@ -555,6 +566,43 @@
     box.style.top = px.top+'px';
     box.style.width = px.width+'px';
     box.style.height = px.height+'px';
+  }
+
+  // ---------- type-a-list screen ----------
+  function openTypeScreen(){
+    document.getElementById('scan-card').style.display='none';
+    document.getElementById('scan-error').style.display='none';
+    document.getElementById('type-list-name').value = '';
+    document.getElementById('type-list-textarea').value = '';
+    document.getElementById('type-screen').style.display='block';
+    document.getElementById('type-list-name').focus();
+  }
+
+  function closeTypeScreen(){
+    document.getElementById('type-screen').style.display='none';
+  }
+
+  function createTypedList(){
+    const nameInput = document.getElementById('type-list-name');
+    const textarea = document.getElementById('type-list-textarea');
+    const items = parseOcrTextToItems(textarea.value);
+    if(items.length === 0){
+      alert('Type at least one item, one per line.');
+      return;
+    }
+    const newList = {
+      id: genId(),
+      name: nameInput.value.trim() || new Date().toLocaleDateString(undefined, { month:'short', day:'numeric' }),
+      createdAt: Date.now(),
+      items
+    };
+    lists.unshift(newList);
+    currentListId = newList.id;
+    saveLists();
+    closeTypeScreen();
+    document.getElementById('scan-card').style.display='block';
+    renderListsRow();
+    renderChecklist();
   }
 
   async function openCropScreen(file){
@@ -965,6 +1013,12 @@
   document.getElementById('scan-card').addEventListener('click', () => {
     document.getElementById('photo-input').click();
   });
+  document.getElementById('type-list-link').addEventListener('click', openTypeScreen);
+  document.getElementById('type-cancel-btn').addEventListener('click', () => {
+    closeTypeScreen();
+    document.getElementById('scan-card').style.display='block';
+  });
+  document.getElementById('type-create-btn').addEventListener('click', createTypedList);
   document.getElementById('rescan-link').addEventListener('click', () => {
     document.getElementById('photo-input').click();
   });
