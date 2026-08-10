@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cart Ledger">
+<meta name="theme-color" content="#EDF1F0">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%234C7A52%22/%3E%3Ctext%20x%3D%2250%22%20y%3D%2266%22%20font-size%3D%2254%22%20text-anchor%3D%22middle%22%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%234C7A52%22/%3E%3Ctext%20x%3D%2250%22%20y%3D%2266%22%20font-size%3D%2254%22%20text-anchor%3D%22middle%22%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E">
+<title>Cart Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDF1F0;
+    --card:#FFFFFF;
+    --ink:#1F2A24;
+    --ink-soft:#5B6B62;
+    --grid-line:#CBD6CE;
+    --cart:#4C7A52;
+    --cart-soft:#D7E4D5;
+    --del:#A8434B;
+    --del-soft:#E7C7C9;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 22px 22px;
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    min-height:100vh;
+    padding-bottom:40px;
+  }
+  .wrap{max-width:480px;margin:0 auto;padding:env(safe-area-inset-top,20px) 16px 0;}
+
+  header.top{padding:6px 2px 14px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 2px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:30px;
+    margin:0;
+    line-height:1.05;
+  }
+
+  /* list switcher */
+  .list-row{
+    display:flex;gap:6px;margin-top:14px;overflow-x:auto;padding-bottom:2px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .list-row::-webkit-scrollbar{display:none;}
+  .list-pill{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;
+    padding:7px 13px;border-radius:999px;background:var(--card);color:var(--ink-soft);
+    cursor:pointer;white-space:nowrap;border:1px solid rgba(31,42,36,.06);
+  }
+  .list-pill.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .list-pill.active::after{content:" ✎";opacity:.6;font-size:10px;}
+  .edit-list-row{display:none;gap:8px;margin-top:8px;align-items:center;flex-wrap:wrap;}
+  .edit-list-row.open{display:flex;}
+  .edit-list-row input{
+    flex:1;min-width:120px;font-family:-apple-system,sans-serif;font-size:13px;border:1px solid var(--grid-line);
+    border-radius:10px;padding:8px 10px;background:var(--card);color:var(--ink);
+  }
+  .edit-list-row button{
+    font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;border:none;border-radius:10px;
+    padding:8px 12px;background:var(--ink);color:var(--paper);cursor:pointer;
+  }
+  .edit-list-row button.el-delete{background:var(--del);}
+  .edit-list-row button.el-cancel{background:transparent;color:var(--ink-soft);}
+
+  /* scan card */
+  .scan-card{
+    margin-top:16px;background:var(--card);border-radius:16px;border:1.5px dashed var(--grid-line);
+    padding:22px 16px;text-align:center;cursor:pointer;
+  }
+  .scan-card .scan-icon{font-size:30px;line-height:1;margin-bottom:8px;}
+  .scan-card .scan-title{font-family:'Fraunces',serif;font-size:18px;font-weight:600;margin:0 0 2px;}
+  .scan-card .scan-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft);}
+  #photo-input{display:none;}
+
+  .scan-progress{
+    margin-top:16px;background:var(--card);border-radius:16px;padding:26px 16px;text-align:center;
+  }
+  .spinner{
+    width:26px;height:26px;border-radius:50%;border:3px solid var(--grid-line);border-top-color:var(--cart);
+    margin:0 auto 12px;animation:spin .8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .scan-progress .sp-label{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-soft);}
+
+  .scan-error{
+    margin-top:16px;background:var(--del-soft);border-radius:14px;padding:14px 16px;
+    font-family:-apple-system,sans-serif;font-size:13px;color:var(--ink);
+  }
+  .scan-error .se-title{font-weight:700;margin-bottom:2px;}
+  .scan-error .se-retry{
+    display:inline-block;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;
+    text-decoration:underline;cursor:pointer;color:var(--ink);
+  }
+
+  /* progress bar */
+  .progress-box{margin-top:16px;}
+  .progress-label{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft);
+    display:flex;justify-content:space-between;margin-bottom:6px;
+  }
+  .progress-track{height:6px;border-radius:99px;background:var(--grid-line);overflow:hidden;}
+  .progress-fill{height:100%;background:var(--cart);border-radius:99px;transition:width .25s ease;}
+
+  /* checklist */
+  .checklist{margin-top:14px;}
+  .item-row{
+    display:flex;align-items:center;gap:10px;background:var(--card);border-radius:12px;
+    padding:12px 12px;margin-bottom:8px;
+  }
+  .item-check{
+    flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--grid-line);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;color:transparent;
+    font-size:15px;font-weight:700;background:var(--card);
+  }
+  .item-row.checked .item-check{background:var(--cart);border-color:var(--cart);color:#fff;}
+  .item-text{flex:1;font-family:-apple-system,sans-serif;font-size:15px;color:var(--ink);min-width:0;}
+  .item-text .item-qty{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-soft);margin-right:6px;}
+  .item-row.checked .item-text{color:var(--ink-soft);text-decoration:line-through;}
+  .item-del{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--ink-soft);
+    cursor:pointer;padding:2px 4px;
+  }
+  .item-edit-input{
+    flex:1;font-family:-apple-system,sans-serif;font-size:15px;border:none;border-bottom:1.5px solid var(--grid-line);
+    background:transparent;color:var(--ink);padding:2px 0;
+  }
+  .item-edit-input:focus{outline:none;border-bottom-color:var(--ink);}
+  .empty-state{
+    text-align:center;padding:40px 10px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-soft);
+  }
+
+  .add-item-row{display:flex;gap:8px;margin-top:4px;}
+  .add-item-row input{
+    flex:1;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid var(--grid-line);
+    border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);
+  }
+  .add-item-row button{
+    font-family:-apple-system,sans-serif;font-size:14px;font-weight:600;border:none;border-radius:10px;
+    padding:10px 16px;background:var(--ink);color:var(--paper);cursor:pointer;white-space:nowrap;
+  }
+
+  .rescan-link{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-soft);
+    text-align:right;margin-top:10px;text-decoration:underline;cursor:pointer;
+  }
+
+  .loading{text-align:center;padding:60px 0;font-family:'JetBrains Mono',monospace;color:var(--ink-soft);font-size:12px;}
+
+  /* sync */
+  .sync-box{
+    margin-top:22px;background:var(--card);border-radius:14px;padding:12px 14px;
+  }
+  .sync-status{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-soft);margin-bottom:8px;
+  }
+  .sync-row{display:flex;gap:8px;}
+  .sync-row input{
+    flex:1;font-family:-apple-system,sans-serif;font-size:13px;border:1px solid var(--grid-line);
+    border-radius:10px;padding:8px 10px;background:var(--paper);color:var(--ink);min-width:0;
+  }
+  .sync-row button{
+    font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;border:none;border-radius:10px;
+    padding:8px 14px;background:var(--ink);color:var(--paper);cursor:pointer;white-space:nowrap;
+  }
+  .sync-disconnect{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+  }
+  .sync-connected-label{color:var(--cart);}
+  .sync-disconnect-link{color:var(--del);text-decoration:underline;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow" id="list-count-label">—</p>
+    <h1>Cart Ledger</h1>
+    <div class="list-row" id="list-row"></div>
+    <div class="edit-list-row" id="edit-list-row">
+      <input type="text" id="edit-list-input" placeholder="List name" maxlength="30">
+      <button id="edit-list-save">Save</button>
+      <button class="el-delete" id="edit-list-delete">Delete</button>
+      <button class="el-cancel" id="edit-list-cancel">Cancel</button>
+    </div>
+  </header>
+
+  <div id="scan-card" class="scan-card">
+    <div class="scan-icon">📷</div>
+    <p class="scan-title">Scan a list</p>
+    <p class="scan-sub">Photograph a handwritten or printed list</p>
+  </div>
+  <input type="file" id="photo-input" accept="image/*" capture="environment">
+
+  <div id="scan-progress" class="scan-progress" style="display:none;">
+    <div class="spinner"></div>
+    <p class="sp-label" id="scan-progress-label">Reading your list…</p>
+  </div>
+
+  <div id="scan-error" class="scan-error" style="display:none;">
+    <div class="se-title">Couldn't read that photo</div>
+    <div id="scan-error-msg">Try a clearer, well-lit shot.</div>
+    <div class="se-retry" id="scan-error-retry">Try again</div>
+  </div>
+
+  <div id="progress-box" class="progress-box" style="display:none;">
+    <div class="progress-label"><span id="progress-text">0 of 0 checked</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%;"></div></div>
+  </div>
+
+  <div class="checklist" id="checklist"><div class="loading">Loading your lists…</div></div>
+
+  <div class="add-item-row" id="add-item-row" style="display:none;">
+    <input type="text" id="add-item-input" placeholder="Add item">
+    <button id="add-item-btn">Add</button>
+  </div>
+
+  <div class="rescan-link" id="rescan-link" style="display:none;">📷 Scan another list</div>
+
+  <div class="sync-box">
+    <div class="sync-status" id="sync-status">Not synced — lists stay on this device only</div>
+    <div class="sync-row" id="sync-row">
+      <input type="text" id="sync-code-input" placeholder="Household sync code">
+      <button id="sync-connect-btn">Connect</button>
+    </div>
+    <div class="sync-disconnect" id="sync-disconnect-row" style="display:none;">
+      <span class="sync-connected-label" id="sync-connected-label">Synced</span>
+      <span class="sync-disconnect-link" id="sync-disconnect-link">Disconnect</span>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+  // Reuses the same Firebase project as Vitals Ledger (same household-sync pattern),
+  // but writes to its own 'cart-households' collection so the two apps never collide.
+  const firebaseConfig = {
+    apiKey: "AIzaSyDdJLGwVEnmNw1dVMvTc9xg4YwP_eP5pV8",
+    authDomain: "vitals-ledger.firebaseapp.com",
+    projectId: "vitals-ledger",
+    storageBucket: "vitals-ledger.firebasestorage.app",
+    messagingSenderId: "315048534774",
+    appId: "1:315048534774:web:5891aa470ae75b147682d7"
+  };
+  const firebaseApp = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // Fill this in with a Google Cloud Vision API key restricted to your GitHub Pages
+  // domain (HTTP referrer restriction) before this will OCR anything.
+  const GOOGLE_VISION_API_KEY = "YOUR_API_KEY_HERE";
+</script>
+<script>
+(function(){
+  const LS_PREFIX = 'cart-ledger:';
+  const LISTS_KEY = 'lists';
+
+  // Data is stored on this device only, in the browser's localStorage — this
+  // keeps the app fully working without needing any paid cloud storage.
+  // Trade-off: lists don't sync between devices unless you connect a household code.
+  function storageGet(key){
+    try{
+      const v = localStorage.getItem(LS_PREFIX+key);
+      return v!=null ? JSON.parse(v) : null;
+    }catch(e){ return null; }
+  }
+  function storageSet(key, value){
+    try{ localStorage.setItem(LS_PREFIX+key, JSON.stringify(value)); return true; }
+    catch(e){ return false; }
+  }
+
+  let lists = storageGet(LISTS_KEY) || [];
+  let currentListId = lists.length ? lists[0].id : null;
+
+  const HOUSEHOLD_KEY = LS_PREFIX+'household-code';
+  let householdCode = null;
+  let householdUnsub = null;
+  let applyingRemote = false;
+
+  function sanitizeCode(raw){
+    return raw.trim().toLowerCase().replace(/[^a-z0-9-_]/g,'');
+  }
+
+  function saveLists(){
+    storageSet(LISTS_KEY, lists);
+    pushToCloud();
+  }
+
+  async function pushToCloud(){
+    if(!householdCode || applyingRemote) return;
+    try{
+      await db.collection('cart-households').doc(householdCode).set({
+        lists,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge:false });
+    }catch(e){ console.error('Cloud sync failed', e); }
+  }
+
+  function applyRemoteData(data){
+    if(!data || !Array.isArray(data.lists)) return;
+    applyingRemote = true;
+    try{
+      lists = data.lists;
+      storageSet(LISTS_KEY, lists);
+      if(!lists.some(l=>l.id===currentListId)){
+        currentListId = lists.length ? lists[0].id : null;
+      }
+      renderListsRow();
+      renderChecklist();
+    } finally {
+      applyingRemote = false;
+    }
+  }
+
+  async function connectHousehold(rawCode){
+    const code = sanitizeCode(rawCode);
+    if(!code){ alert('Enter a household code first.'); return; }
+    document.getElementById('sync-connect-btn').textContent = 'Connecting…';
+    try{
+      const ref = db.collection('cart-households').doc(code);
+      const snap = await ref.get();
+      if(snap.exists){
+        applyRemoteData(snap.data());
+      } else {
+        householdCode = code;
+        await pushToCloud();
+      }
+      householdCode = code;
+      localStorage.setItem(HOUSEHOLD_KEY, code);
+      attachHouseholdListener();
+      renderSyncStatus();
+    }catch(e){
+      console.error(e);
+      alert('Could not connect — check your connection and try again.');
+    }
+    document.getElementById('sync-connect-btn').textContent = 'Connect';
+  }
+
+  function attachHouseholdListener(){
+    if(householdUnsub) householdUnsub();
+    householdUnsub = db.collection('cart-households').doc(householdCode)
+      .onSnapshot(snap=>{
+        if(snap.exists) applyRemoteData(snap.data());
+      }, err=>console.error('Sync listener error', err));
+  }
+
+  function disconnectHousehold(){
+    if(householdUnsub){ householdUnsub(); householdUnsub=null; }
+    householdCode = null;
+    localStorage.removeItem(HOUSEHOLD_KEY);
+    renderSyncStatus();
+  }
+
+  function renderSyncStatus(){
+    const statusEl = document.getElementById('sync-status');
+    const rowEl = document.getElementById('sync-row');
+    const discRow = document.getElementById('sync-disconnect-row');
+    const label = document.getElementById('sync-connected-label');
+    if(householdCode){
+      statusEl.style.display='none';
+      rowEl.style.display='none';
+      discRow.style.display='flex';
+      label.textContent = `Synced as "${householdCode}"`;
+    } else {
+      statusEl.style.display='block';
+      statusEl.textContent = 'Not synced — lists stay on this device only';
+      rowEl.style.display='flex';
+      discRow.style.display='none';
+    }
+  }
+
+  // ---------- helpers ----------
+  const genId = () => `${Date.now()}-${Math.random().toString(36).slice(2,9)}`;
+
+  function currentList(){
+    return lists.find(l=>l.id===currentListId) || null;
+  }
+
+  function capitalize(str){
+    return str.charAt(0).toUpperCase()+str.slice(1);
+  }
+
+  function isLikelyNoise(text){
+    if(text.length < 2) return true;
+    if(/^[^a-zA-Z0-9]+$/.test(text)) return true;
+    return false;
+  }
+
+  function parseOcrTextToItems(rawText){
+    const lines = rawText.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
+    const items = [];
+    for(const raw of lines){
+      let text = raw;
+      text = text.replace(/^[-*•●○□■✓✔]\s*/, '');
+      text = text.replace(/^\d+[\.\)]\s*/, '');
+      text = text.replace(/^\[\s?[xX]?\s?\]\s*/, '');
+      const qtyMatch = text.match(/^(\d+\s?(x|lbs?|kg|dozen|pack|pcs?)?)\s+(.*)/i);
+      const quantity = qtyMatch ? qtyMatch[1].trim() : null;
+      const itemText = qtyMatch ? qtyMatch[3].trim() : text.trim();
+      if(isLikelyNoise(itemText)) continue;
+      items.push({ id: genId(), text: capitalize(itemText), quantity, checked:false });
+    }
+    return items;
+  }
+
+  async function runCloudOCR(base64Image){
+    if(!GOOGLE_VISION_API_KEY || GOOGLE_VISION_API_KEY === 'YOUR_API_KEY_HERE'){
+      throw new Error('no-api-key');
+    }
+    const response = await fetch(
+      `https://vision.googleapis.com/v1/images:annotate?key=${GOOGLE_VISION_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          requests: [{
+            image: { content: base64Image },
+            features: [{ type: 'DOCUMENT_TEXT_DETECTION' }],
+          }],
+        }),
+      }
+    );
+    const data = await response.json();
+    if(data.error) throw new Error(data.error.message || 'vision-error');
+    return (data.responses && data.responses[0] && data.responses[0].fullTextAnnotation
+      && data.responses[0].fullTextAnnotation.text) || '';
+  }
+
+  function fileToBase64(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function handlePhotoCapture(file){
+    document.getElementById('scan-card').style.display='none';
+    document.getElementById('scan-error').style.display='none';
+    document.getElementById('scan-progress').style.display='block';
+    try{
+      const base64 = await fileToBase64(file);
+      const rawText = await runCloudOCR(base64);
+      const items = parseOcrTextToItems(rawText);
+      const newList = {
+        id: genId(),
+        name: new Date().toLocaleDateString(undefined, { month:'short', day:'numeric' }),
+        createdAt: Date.now(),
+        items
+      };
+      lists.unshift(newList);
+      currentListId = newList.id;
+      saveLists();
+      document.getElementById('scan-progress').style.display='none';
+      renderListsRow();
+      renderChecklist();
+    }catch(e){
+      console.error(e);
+      document.getElementById('scan-progress').style.display='none';
+      const msgEl = document.getElementById('scan-error-msg');
+      msgEl.textContent = (e && e.message === 'no-api-key')
+        ? 'No Cloud Vision API key is set up yet for this app.'
+        : "Try a clearer, well-lit shot.";
+      document.getElementById('scan-error').style.display='block';
+    }
+  }
+
+  // ---------- rendering ----------
+  function renderListsRow(){
+    const row = document.getElementById('list-row');
+    const countLabel = document.getElementById('list-count-label');
+    row.innerHTML = '';
+    countLabel.textContent = lists.length
+      ? `${lists.length} SAVED LIST${lists.length===1?'':'S'}`
+      : 'NO LISTS YET';
+    for(const l of lists){
+      const pill = document.createElement('div');
+      pill.className = 'list-pill' + (l.id===currentListId ? ' active' : '');
+      pill.textContent = l.name;
+      pill.addEventListener('click', () => {
+        if(l.id===currentListId){
+          openEditList(l);
+        } else {
+          currentListId = l.id;
+          closeEditList();
+          renderListsRow();
+          renderChecklist();
+        }
+      });
+      row.appendChild(pill);
+    }
+  }
+
+  function openEditList(list){
+    const row = document.getElementById('edit-list-row');
+    const input = document.getElementById('edit-list-input');
+    input.value = list.name;
+    row.classList.add('open');
+  }
+  function closeEditList(){
+    document.getElementById('edit-list-row').classList.remove('open');
+  }
+
+  function renderChecklist(){
+    const wrap = document.getElementById('checklist');
+    const addRow = document.getElementById('add-item-row');
+    const rescan = document.getElementById('rescan-link');
+    const progressBox = document.getElementById('progress-box');
+    const list = currentList();
+
+    if(!list){
+      wrap.innerHTML = '<div class="empty-state">No list yet — scan a photo of a shopping list to get started.</div>';
+      addRow.style.display='none';
+      rescan.style.display='none';
+      progressBox.style.display='none';
+      return;
+    }
+
+    addRow.style.display='flex';
+    rescan.style.display='block';
+
+    const total = list.items.length;
+    const checkedCount = list.items.filter(i=>i.checked).length;
+    if(total>0){
+      progressBox.style.display='block';
+      document.getElementById('progress-text').textContent = `${checkedCount} of ${total} checked`;
+      document.getElementById('progress-fill').style.width = `${Math.round(checkedCount/total*100)}%`;
+    } else {
+      progressBox.style.display='none';
+    }
+
+    if(total===0){
+      wrap.innerHTML = '<div class="empty-state">No items in this list yet. Add one below.</div>';
+      return;
+    }
+
+    wrap.innerHTML = '';
+    for(const item of list.items){
+      const row = document.createElement('div');
+      row.className = 'item-row' + (item.checked ? ' checked' : '');
+
+      const check = document.createElement('div');
+      check.className = 'item-check';
+      check.textContent = '✓';
+      check.addEventListener('click', () => toggleItem(item.id));
+      row.appendChild(check);
+
+      const text = document.createElement('div');
+      text.className = 'item-text';
+      text.innerHTML = (item.quantity ? `<span class="item-qty">${escapeHtml(item.quantity)}</span>` : '')
+        + escapeHtml(item.text);
+      text.addEventListener('click', () => startEditItem(item.id, row, text));
+      row.appendChild(text);
+
+      const del = document.createElement('div');
+      del.className = 'item-del';
+      del.textContent = '×';
+      del.addEventListener('click', () => deleteItem(item.id));
+      row.appendChild(del);
+
+      wrap.appendChild(row);
+    }
+  }
+
+  function escapeHtml(s){
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function startEditItem(itemId, row, textEl){
+    const list = currentList();
+    const item = list.items.find(i=>i.id===itemId);
+    if(!item) return;
+    const input = document.createElement('input');
+    input.className = 'item-edit-input';
+    input.value = item.text;
+    row.replaceChild(input, textEl);
+    input.focus();
+    input.select();
+    const commit = () => {
+      const v = input.value.trim();
+      if(v) item.text = capitalize(v);
+      saveLists();
+      renderChecklist();
+    };
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', e => { if(e.key==='Enter') input.blur(); });
+  }
+
+  function toggleItem(itemId){
+    const list = currentList();
+    const item = list.items.find(i=>i.id===itemId);
+    if(!item) return;
+    item.checked = !item.checked;
+    saveLists();
+    renderChecklist();
+  }
+
+  function deleteItem(itemId){
+    const list = currentList();
+    list.items = list.items.filter(i=>i.id!==itemId);
+    saveLists();
+    renderChecklist();
+  }
+
+  function addItemManually(text){
+    const list = currentList();
+    if(!list || !text.trim()) return;
+    list.items.push({ id: genId(), text: capitalize(text.trim()), quantity:null, checked:false });
+    saveLists();
+    renderChecklist();
+  }
+
+  // ---------- wire up ----------
+  document.getElementById('scan-card').addEventListener('click', () => {
+    document.getElementById('photo-input').click();
+  });
+  document.getElementById('rescan-link').addEventListener('click', () => {
+    document.getElementById('photo-input').click();
+  });
+  document.getElementById('photo-input').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(file) handlePhotoCapture(file);
+    e.target.value = '';
+  });
+  document.getElementById('scan-error-retry').addEventListener('click', () => {
+    document.getElementById('scan-error').style.display='none';
+    document.getElementById('scan-card').style.display='block';
+  });
+
+  document.getElementById('edit-list-save').addEventListener('click', () => {
+    const list = currentList();
+    const v = document.getElementById('edit-list-input').value.trim();
+    if(list && v){ list.name = v; saveLists(); renderListsRow(); }
+    closeEditList();
+  });
+  document.getElementById('edit-list-cancel').addEventListener('click', closeEditList);
+  document.getElementById('edit-list-delete').addEventListener('click', () => {
+    const list = currentList();
+    if(!list) return;
+    if(!confirm(`Delete "${list.name}"? This can't be undone.`)) return;
+    lists = lists.filter(l=>l.id!==list.id);
+    currentListId = lists.length ? lists[0].id : null;
+    saveLists();
+    closeEditList();
+    renderListsRow();
+    renderChecklist();
+  });
+
+  document.getElementById('add-item-btn').addEventListener('click', () => {
+    const input = document.getElementById('add-item-input');
+    addItemManually(input.value);
+    input.value = '';
+    input.focus();
+  });
+  document.getElementById('add-item-input').addEventListener('keydown', (e) => {
+    if(e.key==='Enter'){
+      addItemManually(e.target.value);
+      e.target.value='';
+    }
+  });
+
+  document.getElementById('sync-connect-btn').addEventListener('click', () => {
+    connectHousehold(document.getElementById('sync-code-input').value);
+  });
+  document.getElementById('sync-disconnect-link').addEventListener('click', disconnectHousehold);
+
+  // ---------- init ----------
+  function init(){
+    const savedCode = localStorage.getItem(HOUSEHOLD_KEY);
+    if(savedCode){
+      householdCode = savedCode;
+      attachHouseholdListener();
+    }
+    renderSyncStatus();
+    renderListsRow();
+    renderChecklist();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
