@@ -162,8 +162,9 @@
     font-size:15px;font-weight:700;background:var(--card);
   }
   .item-row.checked .item-check{background:var(--cart);border-color:var(--cart);color:#fff;}
-  .item-text{flex:1;font-family:-apple-system,sans-serif;font-size:15px;color:var(--ink);min-width:0;}
-  .item-text .item-qty{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-soft);margin-right:6px;}
+  .item-text{flex:1;display:flex;align-items:center;gap:8px;font-family:-apple-system,sans-serif;font-size:15px;color:var(--ink);min-width:0;}
+  .item-name{flex:1;min-width:0;overflow-wrap:anywhere;}
+  .item-text .item-qty{font-family:-apple-system,sans-serif;font-size:15px;color:var(--ink-soft);flex:none;white-space:nowrap;}
   .item-row.checked .item-text{color:var(--ink-soft);text-decoration:line-through;}
   .item-del{
     flex:none;font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--ink-soft);
@@ -879,8 +880,8 @@
 
       const text = document.createElement('div');
       text.className = 'item-text';
-      text.innerHTML = (item.quantity ? `<span class="item-qty">${escapeHtml(item.quantity)}</span>` : '')
-        + escapeHtml(item.text);
+      text.innerHTML = `<span class="item-name">${escapeHtml(item.text)}</span>`
+        + (item.quantity ? `<span class="item-qty">${escapeHtml(item.quantity)}</span>` : '');
       text.addEventListener('click', () => startEditItem(item.id, row, text));
       row.appendChild(text);
 
@@ -932,8 +933,8 @@
     textInput.className = 'item-edit-input';
     textInput.value = item.text;
 
-    wrap.appendChild(qtyInput);
     wrap.appendChild(textInput);
+    wrap.appendChild(qtyInput);
     row.replaceChild(wrap, textEl);
     textInput.focus();
     textInput.select();
