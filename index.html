@@ -259,12 +259,24 @@
   </header>
 
   <div id="scan-card" class="scan-card">
-    <div class="scan-icon">📷</div>
-    <p class="scan-title">Scan a list</p>
-    <p class="scan-sub">Photograph a handwritten or printed list</p>
+    <div class="scan-icon">🛒</div>
+    <p class="scan-title">New list</p>
+    <p class="scan-sub">Name it, then scan, type, or start blank</p>
   </div>
-  <div class="rescan-link" id="type-list-link" style="text-align:center;margin-top:10px;">✏️ Or type a list instead</div>
   <input type="file" id="photo-input" accept="image/*" capture="environment">
+
+  <div id="new-list-screen" class="crop-screen" style="display:none;">
+    <p class="crop-hint">Name this list, then choose how to fill it in</p>
+    <input type="text" id="new-list-name-input" placeholder="List name (e.g. Costco, Walmart)" style="width:100%;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid var(--grid-line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);margin-bottom:12px;">
+    <div class="crop-actions">
+      <button class="crop-confirm" id="nl-scan-btn">📷 Scan a list</button>
+      <button class="crop-confirm" id="nl-type-btn">✏️ Type items</button>
+    </div>
+    <div class="crop-actions">
+      <button class="crop-cancel" id="nl-blank-btn">Start blank</button>
+      <button class="crop-cancel" id="nl-cancel-btn">Cancel</button>
+    </div>
+  </div>
 
   <div id="type-screen" class="crop-screen" style="display:none;">
     <p class="crop-hint">One item per line — quantities like "2 lbs" or "3x" are picked up automatically</p>
@@ -317,6 +329,7 @@
   </div>
 
   <div class="rescan-link" id="rescan-link" style="display:none;">📷 Scan another list</div>
+
 
   <input type="file" id="item-photo-input" accept="image/*" style="display:none;">
 
@@ -568,14 +581,58 @@
     box.style.height = px.height+'px';
   }
 
-  // ---------- type-a-list screen ----------
-  function openTypeScreen(){
+  // ---------- name-first new list screen ----------
+  let pendingNewListName = null;
+
+  function openNewListScreen(){
     document.getElementById('scan-card').style.display='none';
     document.getElementById('scan-error').style.display='none';
-    document.getElementById('type-list-name').value = '';
+    document.getElementById('new-list-name-input').value = '';
+    document.getElementById('new-list-screen').style.display='block';
+    document.getElementById('new-list-name-input').focus();
+  }
+
+  function closeNewListScreen(){
+    document.getElementById('new-list-screen').style.display='none';
+  }
+
+  function startScanFromNewListScreen(){
+    pendingNewListName = document.getElementById('new-list-name-input').value.trim();
+    closeNewListScreen();
+    document.getElementById('photo-input').click();
+  }
+
+  function startTypeFromNewListScreen(){
+    const name = document.getElementById('new-list-name-input').value.trim();
+    closeNewListScreen();
+    openTypeScreen(name);
+  }
+
+  function startBlankFromNewListScreen(){
+    const name = document.getElementById('new-list-name-input').value.trim();
+    const newList = {
+      id: genId(),
+      name: name || new Date().toLocaleDateString(undefined, { month:'short', day:'numeric' }),
+      createdAt: Date.now(),
+      items: []
+    };
+    lists.unshift(newList);
+    currentListId = newList.id;
+    saveLists();
+    closeNewListScreen();
+    document.getElementById('scan-card').style.display='block';
+    renderListsRow();
+    renderChecklist();
+  }
+
+  // ---------- type-a-list screen ----------
+  function openTypeScreen(prefillName){
+    document.getElementById('scan-card').style.display='none';
+    document.getElementById('scan-error').style.display='none';
+    document.getElementById('type-list-name').value = prefillName || '';
     document.getElementById('type-list-textarea').value = '';
     document.getElementById('type-screen').style.display='block';
-    document.getElementById('type-list-name').focus();
+    (prefillName ? document.getElementById('type-list-textarea') : document.getElementById('type-list-name')).focus();
   }
 
   function closeTypeScreen(){
@@ -707,9 +764,11 @@
         throw new Error('No readable text found in that photo — try a clearer, well-lit shot.');
       }
       const items = parseOcrTextToItems(rawText);
+      const chosenName = (pendingNewListName || '').trim();
+      pendingNewListName = null;
       const newList = {
         id: genId(),
-        name: new Date().toLocaleDateString(undefined, { month:'short', day:'numeric' }),
+        name: chosenName || new Date().toLocaleDateString(undefined, { month:'short', day:'numeric' }),
         createdAt: Date.now(),
         items
       };
@@ -721,6 +780,7 @@
       renderChecklist();
     }catch(e){
       console.error(e);
+      pendingNewListName = null;
       document.getElementById('scan-progress').style.display='none';
       const msgEl = document.getElementById('scan-error-msg');
       if(e && e.message === 'no-api-key'){
@@ -759,25 +819,8 @@
     const addPill = document.createElement('div');
     addPill.className = 'list-pill add-pill';
     addPill.textContent = '+ New';
-    addPill.addEventListener('click', createNewList);
+    addPill.addEventListener('click', () => { closeEditList(); openNewListScreen(); });
     row.appendChild(addPill);
-  }
-
-  function createNewList(){
-    const name = prompt('Name this list (e.g. Costco, Walmart, Farmers Market):', '');
-    if(name===null) return; // cancelled
-    const newList = {
-      id: genId(),
-      name: name.trim() || new Date().toLocaleDateString(undefined, { month:'short', day:'numeric' }),
-      createdAt: Date.now(),
-      items: []
-    };
-    lists.unshift(newList);
-    currentListId = newList.id;
-    saveLists();
-    closeEditList();
-    renderListsRow();
-    renderChecklist();
   }
 
   function openEditList(list){
@@ -1010,18 +1053,21 @@
   }
 
   // ---------- wire up ----------
-  document.getElementById('scan-card').addEventListener('click', () => {
-    document.getElementById('photo-input').click();
+  document.getElementById('scan-card').addEventListener('click', openNewListScreen);
+  document.getElementById('nl-cancel-btn').addEventListener('click', () => {
+    closeNewListScreen();
+    document.getElementById('scan-card').style.display='block';
   });
-  document.getElementById('type-list-link').addEventListener('click', openTypeScreen);
+  document.getElementById('nl-scan-btn').addEventListener('click', startScanFromNewListScreen);
+  document.getElementById('nl-type-btn').addEventListener('click', startTypeFromNewListScreen);
+  document.getElementById('nl-blank-btn').addEventListener('click', startBlankFromNewListScreen);
+
   document.getElementById('type-cancel-btn').addEventListener('click', () => {
     closeTypeScreen();
     document.getElementById('scan-card').style.display='block';
   });
   document.getElementById('type-create-btn').addEventListener('click', createTypedList);
-  document.getElementById('rescan-link').addEventListener('click', () => {
-    document.getElementById('photo-input').click();
-  });
+  document.getElementById('rescan-link').addEventListener('click', openNewListScreen);
   document.getElementById('photo-input').addEventListener('change', (e) => {
     const file = e.target.files[0];
     if(file) openCropScreen(file);
@@ -1034,7 +1080,11 @@
 
   document.getElementById('crop-cancel-btn').addEventListener('click', () => {
     closeCropScreen();
-    document.getElementById('scan-card').style.display='block';
+    if(pendingNewListName !== null){
+      document.getElementById('photo-input').click(); // retake, keep the name already entered
+    } else {
+      document.getElementById('scan-card').style.display='block';
+    }
   });
   document.getElementById('crop-confirm-btn').addEventListener('click', () => {
     const base64 = cropToDataUrl();
