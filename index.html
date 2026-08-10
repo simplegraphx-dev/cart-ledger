@@ -619,6 +619,9 @@
     document.getElementById('scan-progress').style.display='block';
     try{
       const rawText = await runCloudOCR(base64);
+      if(!rawText || !rawText.trim()){
+        throw new Error('No readable text found in that photo — try a clearer, well-lit shot.');
+      }
       const items = parseOcrTextToItems(rawText);
       const newList = {
         id: genId(),
@@ -636,9 +639,11 @@
       console.error(e);
       document.getElementById('scan-progress').style.display='none';
       const msgEl = document.getElementById('scan-error-msg');
-      msgEl.textContent = (e && e.message === 'no-api-key')
-        ? 'No Cloud Vision API key is set up yet for this app.'
-        : "Try a clearer, well-lit shot.";
+      if(e && e.message === 'no-api-key'){
+        msgEl.textContent = 'No Cloud Vision API key is set up yet for this app.';
+      } else {
+        msgEl.textContent = (e && e.message) ? e.message : "Try a clearer, well-lit shot.";
+      }
       document.getElementById('scan-error').style.display='block';
     }
   }
