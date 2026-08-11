@@ -318,6 +318,7 @@
       <button class="crop-cancel" id="crop-cancel-btn">Retake</button>
       <button class="crop-confirm" id="crop-confirm-btn">Use this crop</button>
     </div>
+    <div class="rescan-link" id="crop-skip-photo-link" style="display:none;text-align:center;margin-top:10px;">Skip this photo</div>
   </div>
 
   <div id="scan-progress" class="scan-progress" style="display:none;">
@@ -682,7 +683,10 @@
     renderChecklist();
   }
 
-  async function openCropScreen(file){
+  let cropMode = 'newlist'; // 'newlist' (feeds OCR) or 'itemphoto' (feeds a photo note)
+
+  async function openCropScreen(file, mode){
+    cropMode = mode || 'newlist';
     const dataUrl = await fileToDataUrl(file);
     const img = document.getElementById('crop-image');
     await new Promise((resolve) => {
@@ -695,6 +699,11 @@
     document.getElementById('scan-card').style.display='none';
     document.getElementById('scan-error').style.display='none';
     document.getElementById('crop-screen').style.display='block';
+    document.getElementById('crop-cancel-btn').textContent = cropMode==='itemphoto' ? 'Use full photo' : 'Retake';
+    document.getElementById('crop-skip-photo-link').style.display = cropMode==='itemphoto' ? 'block' : 'none';
+    document.querySelector('#crop-screen .crop-hint').textContent = cropMode==='itemphoto'
+      ? 'Drag the corners to frame the photo note'
+      : 'Drag the corners to frame just the list';
 
     // default crop box: 85% inset, centered
     requestAnimationFrame(() => {
@@ -760,18 +769,33 @@
 
   function cropPointerUp(){ cropDrag = null; }
 
-  function cropToDataUrl(){
+  // Returns a full data: URL. Pass maxDim/quality to downscale (used for item
+  // photo notes, which get stored in localStorage/Firestore and should stay
+  // small); omit them to keep full resolution (used for the OCR scan path).
+  function cropToDataUrl(maxDim, quality){
     const box = pctBox();
-    const canvas = document.createElement('canvas');
     const sx = Math.round(box.left * cropNaturalWidth);
     const sy = Math.round(box.top * cropNaturalHeight);
     const sWidth = Math.round((box.right-box.left) * cropNaturalWidth);
     const sHeight = Math.round((box.bottom-box.top) * cropNaturalHeight);
-    canvas.width = sWidth;
-    canvas.height = sHeight;
+    let outW = sWidth, outH = sHeight;
+    if(maxDim && Math.max(outW, outH) > maxDim){
+      const f = maxDim / Math.max(outW, outH);
+      outW = Math.round(outW*f);
+      outH = Math.round(outH*f);
+    }
+    const canvas = document.createElement('canvas');
+    canvas.width = outW;
+    canvas.height = outH;
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(document.getElementById('crop-image'), sx, sy, sWidth, sHeight, 0, 0, sWidth, sHeight);
-    return canvas.toDataURL('image/jpeg', 0.92).split(',')[1];
+    ctx.drawImage(document.getElementById('crop-image'), sx, sy, sWidth, sHeight, 0, 0, outW, outH);
+    return canvas.toDataURL('image/jpeg', quality || 0.92);
+  }
+
+  function useFullImageNoCrop(){
+    const stage = document.getElementById('crop-stage');
+    applyBoxPx({ left:0, top:0, width: stage.clientWidth, height: stage.clientHeight });
+    return cropToDataUrl(640, 0.6);
   }
 
   async function handlePhotoCapture(base64){
@@ -1021,6 +1045,8 @@
 
   // ---------- item photo notes ----------
   let pendingPhotoItemId = null;
+  let itemPhotoQueue = [];
+  let itemPhotoQueueItemId = null;
   let lightboxIndex = 0;
 
   // Migrates the old single `photo` field (from before multi-photo support)
@@ -1038,46 +1064,37 @@
     document.getElementById('item-photo-input').click();
   }
 
-  function resizeImageFile(file, maxDim, quality){
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const img = new Image();
-        img.onload = () => {
-          let { width, height } = img;
-          if(width > height && width > maxDim){ height = Math.round(height*(maxDim/width)); width = maxDim; }
-          else if(height > maxDim){ width = Math.round(width*(maxDim/height)); height = maxDim; }
-          const canvas = document.createElement('canvas');
-          canvas.width = width; canvas.height = height;
-          canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-          resolve(canvas.toDataURL('image/jpeg', quality));
-        };
-        img.onerror = reject;
-        img.src = reader.result;
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+  function handleItemPhotosPicked(fileList){
+    if(!pendingPhotoItemId) return;
+    itemPhotoQueueItemId = pendingPhotoItemId;
+    itemPhotoQueue = Array.from(fileList);
+    pendingPhotoItemId = null;
+    processNextItemPhotoInQueue();
   }
 
-  async function handleItemPhotosPicked(fileList){
-    if(!pendingPhotoItemId) return;
-    const list = currentList();
-    const item = list && list.items.find(i=>i.id===pendingPhotoItemId);
-    pendingPhotoItemId = null;
-    if(!item) return;
-    const photos = getItemPhotos(item);
-    // Kept small (max 640px, moderate quality) since photo notes get stored in
-    // localStorage and, if household sync is on, pushed to Firestore with the
-    // rest of the list — large images would bloat both quickly.
-    for(const file of fileList){
-      try{
-        const dataUrl = await resizeImageFile(file, 640, 0.6);
-        photos.push(dataUrl);
-      }catch(e){ console.error('Photo attach failed', e); }
+  function processNextItemPhotoInQueue(){
+    if(itemPhotoQueue.length === 0){
+      itemPhotoQueueItemId = null;
+      updateScanCardVisibility();
+      return;
     }
-    saveLists();
-    renderChecklist();
+    const file = itemPhotoQueue.shift();
+    openCropScreen(file, 'itemphoto');
+  }
+
+  function saveCroppedItemPhoto(dataUrl){
+    const list = currentList();
+    const item = list && list.items.find(i=>i.id===itemPhotoQueueItemId);
+    if(item){
+      getItemPhotos(item).push(dataUrl);
+      saveLists();
+      renderChecklist();
+    }
+    processNextItemPhotoInQueue();
+  }
+
+  function skipCurrentItemPhoto(){
+    processNextItemPhotoInQueue();
   }
 
   function openPhotoLightbox(itemId, index){
@@ -1159,6 +1176,12 @@
   });
 
   document.getElementById('crop-cancel-btn').addEventListener('click', () => {
+    if(cropMode === 'itemphoto'){
+      const dataUrl = useFullImageNoCrop();
+      closeCropScreen();
+      saveCroppedItemPhoto(dataUrl);
+      return;
+    }
     closeCropScreen();
     if(pendingNewListName !== null){
       document.getElementById('photo-input').click(); // retake, keep the name already entered
@@ -1167,9 +1190,19 @@
     }
   });
   document.getElementById('crop-confirm-btn').addEventListener('click', () => {
-    const base64 = cropToDataUrl();
+    if(cropMode === 'itemphoto'){
+      const dataUrl = cropToDataUrl(640, 0.6);
+      closeCropScreen();
+      saveCroppedItemPhoto(dataUrl);
+      return;
+    }
+    const fullDataUrl = cropToDataUrl();
     closeCropScreen();
-    handlePhotoCapture(base64);
+    handlePhotoCapture(fullDataUrl.split(',')[1]);
+  });
+  document.getElementById('crop-skip-photo-link').addEventListener('click', () => {
+    closeCropScreen();
+    skipCurrentItemPhoto();
   });
   document.querySelectorAll('.crop-handle').forEach(h => {
     const handle = h.dataset.handle;
