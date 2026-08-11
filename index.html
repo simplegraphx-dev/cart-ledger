@@ -1227,6 +1227,27 @@
   document.getElementById('lightbox-remove-btn').addEventListener('click', removeCurrentLightboxPhoto);
   document.getElementById('lightbox-prev-btn').addEventListener('click', lightboxPrev);
   document.getElementById('lightbox-next-btn').addEventListener('click', lightboxNext);
+
+  // swipe left/right to move between an item's photos
+  (function(){
+    const stage = document.querySelector('.photo-lightbox-stage');
+    let touchStartX = null, touchStartY = null;
+    stage.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive:true });
+    stage.addEventListener('touchend', (e) => {
+      if(touchStartX===null) return;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      touchStartX = null; touchStartY = null;
+      // require a mostly-horizontal swipe past a small threshold, so a vertical
+      // drag (e.g. accidental scroll) doesn't get mistaken for a page change
+      if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)*1.5){
+        if(dx < 0) lightboxNext(); else lightboxPrev();
+      }
+    }, { passive:true });
+  })();
   document.getElementById('photo-lightbox').addEventListener('click', (e) => {
     if(e.target.id === 'photo-lightbox') closePhotoLightbox();
   });
