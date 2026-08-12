@@ -5,184 +5,1300 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Vitals Ledger">
-<title>Vitals & Vacation Ledger</title>
+<meta name="apple-mobile-web-app-title" content="Shopping Cart">
+<meta name="theme-color" content="#E3EEE1">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAAFoCAYAAAB65WHVAAALOklEQVR4nO3dO3pbxxKF0YY/D09O5NnIsTkbMzHnRwe8uIQogMTjPHZVr5U6cDeM86tQlMHD4KJvP76/7n0G6O7l6fmw9xlSTf/CiDDkmj3e011ekKGu2YLd/rKCDH11D3bLy4kyzKdjrFtdSJiBTqEufxFRBi6pHuuyhxdm4FpVQ13u0MIM3KtaqMscVpiBpVQJdfwhhRlYS3qoYw8nzMBWUkP9294HOEecgS2lNifqT43UFwmYR9I0HTNBizOQIKlFEYFOekEAUpq06yif8iIAXLLnymO3CVqcgQr2bNUugRZnoJK9mrV5oMUZqGiPdm22WxFmoIut9tKbTNDiDHSyVdNWD7Q4Ax1t0bZVAy3OQGdrN261QIszMIM1W7dKoMUZmMlazVs80OIMzGiN9kV8FwcAv1o00KZnYGZLN3CxQIszwLItXCTQ4gzwbqkmPhxocQb41RJt9ENCgFAPBdr0DHDZo428O9DiDPC1R1p5V6DFGeB69zbTDhog1M2BNj0D3O6edt4UaHEGuN+tDbXiAAh1daBNzwCPu6WlJmiAUFcF2vQMsJxrm2qCBgj1ZaBNzwDLu6atJmiAUIcxxnh9fY2dkv/468+9jwCwmpen58Olf3ZIjvMpoQY6+izQZVYc//79z95HAFjcZ7voMoEe4y3SQg3MolSgAWZSMtCmaKCTS2uOkoEeQ6SB/soGegyRBvo4N0WXDjRAZ+UDbYoGuiof6DFEGujh45qjRaDHEGmgnzaBHkOkgV5aBXoMkQb6aBdogMpO99AtA22KBjpoGegxRBqor22gxxBpoLbWgR5DpIF6jnvo9oEeQ6SBmqYINEBF0wTaFA1U8+lv9d7iF7VuHU6/fBao4OXp+XAY4/NfWrgFkQb42cvT8yFixbF1MK07gAoOe0/Pp0zSAO8iJugjkzTAu6hAA/AuLtCmaIA3cYEeQ6QBxggN9BgiDRAb6DFEGphbdKDHEGlgXvGBBphViUCbooEZlQj0GCINzKdMoMcQaWAupQI9hkgD8ygX6DFEGphDyUCPIdJAf2UDDdBd6UCbooHOSgd6DJEG+iof6DFEGuipRaDHEGmgnzaBHkOkgV5aBRqgk3aBNkUDXbQL9BgiDfTQMtBjiDRQX9tAjyHSQG2Hbz++v+59iLVtHc6t/2CASj57Hj07P5si0GOYbqESoX7TesUB1GSgejPNBD2G/+hQ0czT9FQT9Mz/oYF6pgr0GCIN1cz8yXe6QI8h0lDNrJGeMtBjiDSQb9pAA7XMOEVPHWhTNJBs6kCPIdJArukDPYZIA5kE+n9EGkgj0CdEGkgi0AChBPoDUzRkmvHZFGiAUAJ9xox/UkOyWZ9JgQYIJdAXzPonNqSZ+VkUaIBQAg0QSqA/MfNHK0gw+zP4+94HmNXsbzx6mfGrQLdgggYIJdBfWGvSNXHQxVrvZZ8yBRoglkADhBLoK1hzwHnWG+sSaIBQAg0QSqCvZM0BP7PeWJ9AA4QSaIBQAn0Daw54Y72xDYEGCCXQAKEE+kbWHMzOemM7Ag0QSqABQgn0Haw5mJX1xrYEGiCUQAOEEug7WXMwG+uN7Qk0QCiBBggl0A+w5mAW1hv7EGiAUAINEEqgH2TNQXfWG/sRaIBQAg0QSqAXYM1BV9Yb+xJogFACDRBKoBdizUE31hv7E2iAUAINEEqgF2TNQRfWGxkEGiCUQAOEEuiFWXNQnfVGDoEGCCXQAKEEegXWHFRlvZFFoAFCCTRAKIFeiTUH1Vhv5BFogFACDRBKoFdkzUEV1huZBBoglEADhBLolVlzkM56I5dAA4QSaIBQAr0Baw5SWW9kE2iAUAINEEqgN2LNQRrrjXwCDRBKoAFCCfSGrDlIYb1Rg0ADhBJogFACvTFrDvZmvVGHQAOEEmiAUAK9A2sO9mK9UYtAA4QSaIBQAr0Taw62Zr1Rj0ADhBJogFACvSNrDrZivVGTQAOEEmiAUAK9M2sO1ma9UZdAA4QSaIBQAh3AmoO1WG/UJtAAoQQaIJRAh7DmYGnWG/UJNEAogQYIJdBBrDlYivVGDwINEOr3vQ/ANkzRUI8JOoyPkKTy3tyeQAOEEmiAUAIdyEdJ0nhP7kOgAUIJNEAogQ7lIyUpvBf3I9AAoQQaIJRAB/PRkr15D+5LoAFCCTRAKIEGCCXQAKEEOpwf0rAX7739CTRAKIEuwCTD1rznMgh0ER4YtuK9lkOgAUIdvv34/rr3IbiN3y/IGkzOeUzQBXmQWJr3VCYTdHGfTdMeOsbwHqlMoAFCWXEAhBJogFACDRBKoAFCCTRAKIEGCCXQAKEEGiCUQAOEEmiAUL/vfQBy3PIteb7DYTledy7xXRyTW+KrS0Xjdl53riHQE1rz+6RF4zKvO7cS6Ils+UX/gvHO6869/JBwElv/Fha/9eWN151HmKCbS3hgZ5zqvO4swQTdWEIkxsg5x1ZS7ptyDu4n0E2lPZxp51lL2j3TzsNtBLqh1Icy9VxLSb1f6rn4mkA3k/4wpp/vXun3Sj8f5wl0I1UewirnvFaV+1Q5J+8EuolqD1+1815S7R7Vzjs7gQYIJdANVJ2Kqp77qOr5q557RgJdXPWHrer5q577qPr5ZyHQAKEEurAuU1C1e1Q77yVd7tGZQAOEEmiAUAJdVLePp1XuU+Wc1+p2n24EGiCUQAOEEuiCun4sTb9X+vnu1fVeHQg0QCiBBggl0AChBBoglEADhBJogFACDRBKoAFCCTRAKIEGCCXQBf3x1597H2EV6fdKP9+9ut6rA4EGCCXQAKEEuqhuH0ur3KfKOa/V7T7dCDRAKIEGCCXQhXX5eFrtHtXOe0mXe3Qm0AChBLq46lNQ1fNXPfdR9fPPQqAbqPqwVT33UdXzVz33jAQaIJRAN1FtKqp23kuq3aPaeWcn0I1UefiqnPNaVe5T5Zy8E+hm0h/C9PPdK/1e6efjPIFuKPVhTD3XUlLvl3ouvibQTaU9lGnnWUvaPdPOw20EurGUhzPlHFtJuW/KObjfYYwxvv34/rr3QVjXv3//s/m/UyC87tzv5en5YIKexNYPrUi88brzCBP0hNac6gTiMq87t3h5ej4I9OSWiIY43M7rzlcEmp/cEg1xWI7XnXMEGiCUHxICBPttjLdS730QAN4cm2yCBggl0AChBBog1P8DbQ8NsL/TFpugAUIJNEAogQYI9VOg7aEB9vOxwSZogFACDRDql0BbcwBs71x7TdAAoc4G2hQNsJ1LzTVBA4QSaIBQFwNtzQGwvs9aa4IGCPVpoE3RAOv5qrEmaIBQXwbaFA2wvGvaaoIGCHVVoE3RAMu5tqkmaIBQVwfaFA3wuFtaaoIGCHVToE3RAPe7taE3T9AiDXC7e9ppxQEQ6q5Am6IBrndvM++eoEUa4GuPtPKhFYdIA1z2aCPtoAFCPRxoUzTAr5Zo4yITtEgDvFuqiYutOEQaYNkWLrqDFmlgZks30A8JAUItHmhTNDCjNdq3ygQt0sBM1mreaisOkQZmsGbrVt1BizTQ2dqNW/2HhCINdLRF2zb5WxwiDXSyVdM2D+e3H99ft/53Aixh62Fz878HbZoGKtqjXbv8jyoiDVSyV7N2+z8JRRqoYM9WRUTSXhpIkzBERnwXR8ILAXCU0qSIQI+R84IAc0tqUcxBTll5AFtLCvNRzAR9KvGFAvpKbU7koU6ZpoG1pIb5KPpwp4QaWEp6mI9KHPKUUAP3qhLmo1KHPSXUwLWqhfmo5KFPCTVwSdUwH5U+/EdiDVSP8qk2Fzkl1DCfTmE+anehj8Qa+uoY5VOtL3eOYENd3YP80VSXPUewIddsQf5o6st/RbxhfbNH+DP/ASrEwUE8Mz10AAAAAElFTkSuQmCC">
+<title>Shopping Cart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #EDF1F0;
-    --card: #FFFFFF;
-    --text: #1C1C1E;
-    --accent: #007AFF;
-    --border: #E5E5EA;
+  :root{
+    --paper:#E3EEE1;
+    --card:#FFFFFF;
+    --ink:#1F2A24;
+    --ink-soft:#5B6B62;
+    --grid-line:#CBD6CE;
+    --cart:#4C7A52;
+    --cart-soft:#D7E4D5;
+    --del:#A8434B;
+    --del-soft:#E7C7C9;
   }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--bg);
-    color: var(--text);
-    margin: 0;
-    padding: 20px;
-    padding-top: calc(20px + env(safe-area-inset-top));
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    min-height:100vh;
+    padding-bottom:40px;
   }
-  .card {
-    background: var(--card);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  .wrap{max-width:480px;margin:0 auto;padding:env(safe-area-inset-top,20px) 16px 0;}
+
+  header.top{padding:6px 2px 14px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 2px;
   }
-  h2, h3 { margin-top: 0; }
-  .form-group {
-    margin-bottom: 12px;
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:30px;
+    margin:0;
+    line-height:1.05;
   }
-  label {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 4px;
+
+  /* list switcher */
+  .list-row{
+    display:flex;gap:6px;margin-top:14px;overflow-x:auto;padding-bottom:2px;
+    -webkit-overflow-scrolling:touch;
   }
-  input[type="date"], input[type="number"], input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    box-sizing: border-box;
-    font-size: 1rem;
+  .list-row::-webkit-scrollbar{display:none;}
+  .list-pill{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;
+    padding:7px 13px;border-radius:999px;background:var(--card);color:var(--ink-soft);
+    cursor:pointer;white-space:nowrap;border:1px solid rgba(31,42,36,.06);
   }
-  button {
-    width: 100%;
-    background-color: var(--accent);
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
+  .list-pill.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .list-pill.active::after{content:" ✎";opacity:.6;font-size:10px;}
+  .list-pill.add-pill{background:transparent;color:var(--ink-soft);border:1px dashed var(--grid-line);}
+  .edit-list-row{display:none;gap:8px;margin-top:8px;align-items:center;flex-wrap:wrap;}
+  .edit-list-row.open{display:flex;}
+  .edit-list-row input{
+    flex:1;min-width:120px;font-family:-apple-system,sans-serif;font-size:13px;border:1px solid var(--grid-line);
+    border-radius:10px;padding:8px 10px;background:var(--card);color:var(--ink);
   }
-  .stats-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #F2F2F7;
-    padding: 12px;
-    border-radius: 8px;
+  .edit-list-row button{
+    font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;border:none;border-radius:10px;
+    padding:8px 12px;background:var(--ink);color:var(--paper);cursor:pointer;
   }
-  .stats-number {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--accent);
+  .edit-list-row button.el-delete{background:var(--del);}
+  .edit-list-row button.el-cancel{background:transparent;color:var(--ink-soft);}
+
+  /* scan card */
+  .scan-card{
+    margin-top:16px;background:var(--card);border-radius:16px;border:1.5px dashed var(--grid-line);
+    padding:22px 16px;text-align:center;cursor:pointer;
   }
-  .entry-item {
-    border-bottom: 1px solid var(--border);
-    padding: 8px 0;
-    display: flex;
-    justify-content: space-between;
+  .scan-card .scan-icon{font-size:30px;line-height:1;margin-bottom:8px;}
+  .scan-card .scan-title{font-family:'Fraunces',serif;font-size:18px;font-weight:600;margin:0 0 2px;}
+  .scan-card .scan-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft);}
+  #photo-input{display:none;}
+
+  .scan-progress{
+    margin-top:16px;background:var(--card);border-radius:16px;padding:26px 16px;text-align:center;
   }
+  .spinner{
+    width:26px;height:26px;border-radius:50%;border:3px solid var(--grid-line);border-top-color:var(--cart);
+    margin:0 auto 12px;animation:spin .8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .scan-progress .sp-label{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-soft);}
+
+  .scan-error{
+    margin-top:16px;background:var(--del-soft);border-radius:14px;padding:14px 16px;
+    font-family:-apple-system,sans-serif;font-size:13px;color:var(--ink);
+  }
+  .scan-error .se-title{font-weight:700;margin-bottom:2px;}
+  .scan-error .se-retry{
+    display:inline-block;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;
+    text-decoration:underline;cursor:pointer;color:var(--ink);
+  }
+
+  /* crop screen */
+  .crop-screen{margin-top:16px;background:var(--card);border-radius:16px;padding:14px;}
+  .crop-hint{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft);
+    text-align:center;margin:0 0 10px;
+  }
+  .crop-stage{
+    position:relative;width:100%;overflow:hidden;border-radius:10px;background:#000;
+    touch-action:none;user-select:none;
+  }
+  .crop-stage img{display:block;width:100%;height:auto;pointer-events:none;-webkit-user-drag:none;}
+  .crop-box{
+    position:absolute;border:2px solid #fff;box-shadow:0 0 0 2000px rgba(0,0,0,.45);
+    touch-action:none;
+  }
+  .crop-handle{
+    position:absolute;width:22px;height:22px;background:var(--cart);border:2px solid #fff;
+    border-radius:50%;touch-action:none;
+  }
+  .crop-handle.nw{top:-11px;left:-11px;cursor:nwse-resize;}
+  .crop-handle.ne{top:-11px;right:-11px;cursor:nesw-resize;}
+  .crop-handle.sw{bottom:-11px;left:-11px;cursor:nesw-resize;}
+  .crop-handle.se{bottom:-11px;right:-11px;cursor:nwse-resize;}
+  .crop-actions{display:flex;gap:10px;margin-top:14px;}
+  .crop-actions button{
+    flex:1;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:600;
+    cursor:pointer;font-family:-apple-system,sans-serif;
+  }
+  .crop-actions .crop-confirm{background:var(--ink);color:var(--paper);}
+  .crop-actions .crop-cancel{background:var(--card);border:1px solid var(--grid-line);color:var(--ink-soft);}
+
+  /* progress bar */
+  .progress-box{margin-top:16px;}
+  .progress-label{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft);
+    display:flex;justify-content:space-between;margin-bottom:6px;
+  }
+  .progress-track{height:6px;border-radius:99px;background:var(--grid-line);overflow:hidden;}
+  .progress-fill{height:100%;background:var(--cart);border-radius:99px;transition:width .25s ease;}
+
+  /* checklist */
+  .checklist{margin-top:14px;}
+  .item-row{
+    display:flex;align-items:center;gap:10px;background:var(--card);border-radius:12px;
+    padding:12px 12px;margin-bottom:8px;
+  }
+  .item-check{
+    flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--grid-line);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;color:transparent;
+    font-size:15px;font-weight:700;background:var(--card);
+  }
+  .item-row.checked .item-check{background:var(--cart);border-color:var(--cart);color:#fff;}
+  .item-text{flex:1;display:flex;align-items:center;gap:8px;font-family:-apple-system,sans-serif;font-size:15px;color:var(--ink);min-width:0;}
+  .item-name{flex:1;min-width:0;overflow-wrap:anywhere;}
+  .item-text .item-qty{font-family:-apple-system,sans-serif;font-size:15px;color:var(--ink-soft);flex:none;white-space:nowrap;}
+  .item-row.checked .item-text{color:var(--ink-soft);text-decoration:line-through;}
+  .item-del{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--ink-soft);
+    cursor:pointer;padding:2px 4px;
+  }
+  .item-edit-input{
+    flex:1;font-family:-apple-system,sans-serif;font-size:15px;border:none;border-bottom:1.5px solid var(--grid-line);
+    background:transparent;color:var(--ink);padding:2px 0;
+  }
+  .item-edit-input:focus{outline:none;border-bottom-color:var(--ink);}
+  .item-edit-wrap{flex:1;display:flex;gap:8px;align-items:center;min-width:0;}
+  .item-edit-qty{
+    width:56px;flex:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;border:none;
+    border-bottom:1.5px solid var(--grid-line);background:transparent;color:var(--ink-soft);padding:2px 0;
+  }
+  .item-edit-qty:focus{outline:none;border-bottom-color:var(--ink);}
+  .item-photo-thumb-wrap{position:relative;flex:none;}
+  .item-photo-thumb{
+    width:28px;height:28px;border-radius:7px;object-fit:cover;cursor:pointer;display:block;
+  }
+  .item-photo-count{
+    position:absolute;bottom:-4px;right:-4px;background:var(--cart);color:#fff;
+    font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;line-height:1;
+    border-radius:99px;padding:2px 4px;min-width:12px;text-align:center;border:1.5px solid var(--card);
+  }
+  .item-photo-add{
+    flex:none;font-size:15px;color:var(--ink-soft);cursor:pointer;padding:2px 3px;opacity:.7;
+  }
+  .photo-lightbox{
+    display:none;position:fixed;inset:0;background:rgba(20,26,22,.9);z-index:50;
+    align-items:center;justify-content:center;flex-direction:column;padding:24px;
+  }
+  .photo-lightbox.open{display:flex;}
+  .photo-lightbox-stage{position:relative;display:flex;align-items:center;justify-content:center;width:100%;}
+  .photo-lightbox img{max-width:100%;max-height:65vh;border-radius:10px;}
+  .lightbox-nav{
+    flex:none;background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:50%;
+    width:38px;height:38px;font-size:18px;cursor:pointer;margin:0 10px;
+  }
+  .lightbox-counter{
+    color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:10px;opacity:.8;
+  }
+  .photo-lightbox-actions{display:flex;gap:10px;margin-top:16px;}
+  .photo-lightbox-actions button{
+    border:none;border-radius:12px;padding:11px 18px;font-size:13px;font-weight:600;
+    cursor:pointer;font-family:-apple-system,sans-serif;
+  }
+  .photo-lightbox-actions .pl-close{background:var(--card);color:var(--ink);}
+  .photo-lightbox-actions .pl-remove{background:var(--del);color:#fff;}
+  .empty-state{
+    text-align:center;padding:40px 10px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-soft);
+  }
+
+  .add-item-row{display:flex;gap:8px;margin-top:4px;}
+  .add-item-row input{
+    flex:1;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid var(--grid-line);
+    border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);
+  }
+  .add-item-row button{
+    font-family:-apple-system,sans-serif;font-size:14px;font-weight:600;border:none;border-radius:10px;
+    padding:10px 16px;background:var(--ink);color:var(--paper);cursor:pointer;white-space:nowrap;
+  }
+
+  .rescan-link{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-soft);
+    text-align:right;margin-top:10px;text-decoration:underline;cursor:pointer;
+  }
+
+  .loading{text-align:center;padding:60px 0;font-family:'JetBrains Mono',monospace;color:var(--ink-soft);font-size:12px;}
+
+  /* sync */
+  .sync-box{
+    margin-top:22px;background:var(--card);border-radius:14px;padding:12px 14px;
+  }
+  .sync-status{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-soft);margin-bottom:8px;
+  }
+  .sync-row{display:flex;gap:8px;}
+  .sync-row input{
+    flex:1;font-family:-apple-system,sans-serif;font-size:13px;border:1px solid var(--grid-line);
+    border-radius:10px;padding:8px 10px;background:var(--paper);color:var(--ink);min-width:0;
+  }
+  .sync-row button{
+    font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;border:none;border-radius:10px;
+    padding:8px 14px;background:var(--ink);color:var(--paper);cursor:pointer;white-space:nowrap;
+  }
+  .sync-disconnect{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+  }
+  .sync-connected-label{color:var(--cart);}
+  .sync-disconnect-link{color:var(--del);text-decoration:underline;cursor:pointer;}
 </style>
 </head>
 <body>
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow" id="list-count-label">—</p>
+    <h1>Shopping Cart</h1>
+    <div class="list-row" id="list-row"></div>
+    <div class="edit-list-row" id="edit-list-row">
+      <input type="text" id="edit-list-input" placeholder="List name" maxlength="30">
+      <button id="edit-list-save">Save</button>
+      <button class="el-delete" id="edit-list-delete">Delete</button>
+      <button class="el-cancel" id="edit-list-cancel">Cancel</button>
+    </div>
+  </header>
 
-  <!-- YTD Summary Card -->
-  <div class="card">
-    <h3><span id="currentYear"></span> Vacation Summary</h3>
-    <div class="stats-box">
-      <span>Total Vacation Hours Used:</span>
-      <span class="stats-number" id="ytdVacation">0 hrs</span>
+  <div id="scan-card" class="scan-card">
+    <div class="scan-icon">🛒</div>
+    <p class="scan-title">New list</p>
+    <p class="scan-sub">Name it, then scan, type, or start blank</p>
+  </div>
+  <input type="file" id="photo-input" accept="image/*" capture="environment">
+
+  <div id="new-list-screen" class="crop-screen" style="display:none;">
+    <p class="crop-hint">Name this list, then choose how to fill it in</p>
+    <input type="text" id="new-list-name-input" placeholder="List name (e.g. Costco, Walmart)" style="width:100%;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid var(--grid-line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);margin-bottom:12px;">
+    <div class="crop-actions">
+      <button class="crop-confirm" id="nl-scan-btn">📷 Scan a list</button>
+      <button class="crop-confirm" id="nl-type-btn">✏️ Type items</button>
+    </div>
+    <div class="crop-actions">
+      <button class="crop-cancel" id="nl-blank-btn">Start blank</button>
+      <button class="crop-cancel" id="nl-cancel-btn">Cancel</button>
     </div>
   </div>
 
-  <!-- Entry Form Card -->
-  <div class="card">
-    <h3>Log Daily Entry</h3>
-    <form id="ledgerForm">
-      <div class="form-group">
-        <label for="entryDate">Date</label>
-        <input type="date" id="entryDate" required>
-      </div>
-      <div class="form-group">
-        <label for="vacationHours">Vacation Hours Taken</label>
-        <input type="number" id="vacationHours" step="0.5" min="0" placeholder="e.g. 8">
-      </div>
-      <div class="form-group">
-        <label for="notes">Notes / Vitals</label>
-        <input type="text" id="notes" placeholder="Additional details...">
-      </div>
-      <button type="submit">Save Entry</button>
-    </form>
+  <div id="type-screen" class="crop-screen" style="display:none;">
+    <p class="crop-hint">One item per line — quantities like "2 lbs" or "3x" are picked up automatically</p>
+    <input type="text" id="type-list-name" placeholder="List name (e.g. Costco)" style="width:100%;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid var(--grid-line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);margin-bottom:10px;">
+    <textarea id="type-list-textarea" placeholder="2 lbs chicken breast&#10;Milk&#10;3 apples&#10;Paper towels" style="width:100%;min-height:140px;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid var(--grid-line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);resize:vertical;"></textarea>
+    <div class="crop-actions">
+      <button class="crop-cancel" id="type-cancel-btn">Cancel</button>
+      <button class="crop-confirm" id="type-create-btn">Create list</button>
+    </div>
   </div>
 
-  <!-- Recent Entries Card -->
-  <div class="card">
-    <h3>Logged Entries</h3>
-    <div id="entriesList">No entries recorded yet.</div>
+  <div id="crop-screen" class="crop-screen" style="display:none;">
+    <p class="crop-hint">Drag the corners to frame just the list</p>
+    <div class="crop-stage" id="crop-stage">
+      <img id="crop-image" alt="">
+      <div class="crop-box" id="crop-box">
+        <div class="crop-handle nw" data-handle="nw"></div>
+        <div class="crop-handle ne" data-handle="ne"></div>
+        <div class="crop-handle sw" data-handle="sw"></div>
+        <div class="crop-handle se" data-handle="se"></div>
+      </div>
+    </div>
+    <div class="crop-actions">
+      <button class="crop-cancel" id="crop-cancel-btn">Retake</button>
+      <button class="crop-confirm" id="crop-confirm-btn">Use this crop</button>
+    </div>
+    <div class="rescan-link" id="crop-skip-photo-link" style="display:none;text-align:center;margin-top:10px;">Skip this photo</div>
   </div>
 
+  <div id="scan-progress" class="scan-progress" style="display:none;">
+    <div class="spinner"></div>
+    <p class="sp-label" id="scan-progress-label">Reading your list…</p>
+  </div>
+
+  <div id="scan-error" class="scan-error" style="display:none;">
+    <div class="se-title">Couldn't read that photo</div>
+    <div id="scan-error-msg">Try a clearer, well-lit shot.</div>
+    <div class="se-retry" id="scan-error-retry">Try again</div>
+  </div>
+
+  <div id="progress-box" class="progress-box" style="display:none;">
+    <div class="progress-label"><span id="progress-text">0 of 0 checked</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%;"></div></div>
+  </div>
+
+  <div class="checklist" id="checklist"><div class="loading">Loading your lists…</div></div>
+
+  <div class="add-item-row" id="add-item-row" style="display:none;">
+    <input type="text" id="add-item-input" placeholder="Add item">
+    <button id="add-item-btn">Add</button>
+  </div>
+
+  <div class="rescan-link" id="rescan-link" style="display:none;">📷 Scan another list</div>
+
+
+  <input type="file" id="item-photo-input" accept="image/*" multiple style="display:none;">
+
+  <div class="sync-box">
+    <div class="sync-status" id="sync-status">Not synced — lists stay on this device only</div>
+    <div class="sync-row" id="sync-row">
+      <input type="text" id="sync-code-input" placeholder="Household sync code">
+      <button id="sync-connect-btn">Connect</button>
+    </div>
+    <div class="sync-disconnect" id="sync-disconnect-row" style="display:none;">
+      <span class="sync-connected-label" id="sync-connected-label">Synced</span>
+      <span class="sync-disconnect-link" id="sync-disconnect-link">Disconnect</span>
+    </div>
+  </div>
+</div>
+
+<div class="photo-lightbox" id="photo-lightbox">
+  <div class="photo-lightbox-stage">
+    <button class="lightbox-nav" id="lightbox-prev-btn">‹</button>
+    <img id="lightbox-img" alt="Item photo note">
+    <button class="lightbox-nav" id="lightbox-next-btn">›</button>
+  </div>
+  <div class="lightbox-counter" id="lightbox-counter">1 of 1</div>
+  <div class="photo-lightbox-actions">
+    <button class="pl-close" id="lightbox-close-btn">Close</button>
+    <button class="pl-remove" id="lightbox-remove-btn">Remove this photo</button>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-  const currentYear = new Date().getFullYear();
-  document.getElementById('currentYear').innerText = currentYear;
-  document.getElementById('entryDate').valueAsDate = new Date();
+  // Reuses the same Firebase project as Vitals Ledger (same household-sync pattern),
+  // but writes to its own 'cart-households' collection so the two apps never collide.
+  const firebaseConfig = {
+    apiKey: "AIzaSyDdJLGwVEnmNw1dVMvTc9xg4YwP_eP5pV8",
+    authDomain: "vitals-ledger.firebaseapp.com",
+    projectId: "vitals-ledger",
+    storageBucket: "vitals-ledger.firebasestorage.app",
+    messagingSenderId: "315048534774",
+    appId: "1:315048534774:web:5891aa470ae75b147682d7"
+  };
+  const firebaseApp = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-  function getStoredEntries() {
-    return JSON.parse(localStorage.getItem('vitals_ledger') || '[]');
+  // Fill this in with a Google Cloud Vision API key restricted to your GitHub Pages
+  // domain (HTTP referrer restriction) before this will OCR anything.
+  const GOOGLE_VISION_API_KEY = "AIzaSyBHSAuUjJ1BbjPxZuNERfEEkwtxUF_yBg0";
+</script>
+<script>
+(function(){
+  const LS_PREFIX = 'cart-ledger:';
+  const LISTS_KEY = 'lists';
+
+  // Data is stored on this device only, in the browser's localStorage — this
+  // keeps the app fully working without needing any paid cloud storage.
+  // Trade-off: lists don't sync between devices unless you connect a household code.
+  function storageGet(key){
+    try{
+      const v = localStorage.getItem(LS_PREFIX+key);
+      return v!=null ? JSON.parse(v) : null;
+    }catch(e){ return null; }
+  }
+  function storageSet(key, value){
+    try{ localStorage.setItem(LS_PREFIX+key, JSON.stringify(value)); return true; }
+    catch(e){ return false; }
   }
 
-  function saveEntries(entries) {
-    localStorage.setItem('vitals_ledger', JSON.stringify(entries));
-    render();
+  let lists = storageGet(LISTS_KEY) || [];
+  let currentListId = lists.length ? lists[0].id : null;
+
+  const HOUSEHOLD_KEY = LS_PREFIX+'household-code';
+  let householdCode = null;
+  let householdUnsub = null;
+  let applyingRemote = false;
+
+  function sanitizeCode(raw){
+    return raw.trim().toLowerCase().replace(/[^a-z0-9-_]/g,'');
   }
 
-  function render() {
-    const entries = getStoredEntries();
-    const listEl = document.getElementById('entriesList');
-    
-    // Calculate YTD Vacation Hours
-    const ytdTotal = entries.reduce((total, entry) => {
-      const entryYear = new Date(entry.date).getFullYear();
-      if (entryYear === currentYear) {
-        return total + (parseFloat(entry.vacationHours) || 0);
+  function saveLists(){
+    storageSet(LISTS_KEY, lists);
+    pushToCloud();
+  }
+
+  async function pushToCloud(){
+    if(!householdCode || applyingRemote) return;
+    try{
+      await db.collection('cart-households').doc(householdCode).set({
+        lists,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge:false });
+    }catch(e){ console.error('Cloud sync failed', e); }
+  }
+
+  function applyRemoteData(data){
+    if(!data || !Array.isArray(data.lists)) return;
+    applyingRemote = true;
+    try{
+      lists = data.lists;
+      storageSet(LISTS_KEY, lists);
+      if(!lists.some(l=>l.id===currentListId)){
+        currentListId = lists.length ? lists[0].id : null;
       }
-      return total;
-    }, 0);
+      renderListsRow();
+      renderChecklist();
+    } finally {
+      applyingRemote = false;
+    }
+  }
 
-    document.getElementById('ytdVacation').innerText = `${ytdTotal} hrs`;
+  async function connectHousehold(rawCode){
+    const code = sanitizeCode(rawCode);
+    if(!code){ alert('Enter a household code first.'); return; }
+    document.getElementById('sync-connect-btn').textContent = 'Connecting…';
+    try{
+      const ref = db.collection('cart-households').doc(code);
+      const snap = await ref.get();
+      if(snap.exists){
+        applyRemoteData(snap.data());
+      } else {
+        householdCode = code;
+        await pushToCloud();
+      }
+      householdCode = code;
+      localStorage.setItem(HOUSEHOLD_KEY, code);
+      attachHouseholdListener();
+      renderSyncStatus();
+    }catch(e){
+      console.error(e);
+      alert('Could not connect — check your connection and try again.');
+    }
+    document.getElementById('sync-connect-btn').textContent = 'Connect';
+  }
 
-    // Render Recent Entries List
-    if (entries.length === 0) {
-      listEl.innerHTML = 'No entries recorded yet.';
+  function attachHouseholdListener(){
+    if(householdUnsub) householdUnsub();
+    householdUnsub = db.collection('cart-households').doc(householdCode)
+      .onSnapshot(snap=>{
+        if(snap.exists) applyRemoteData(snap.data());
+      }, err=>console.error('Sync listener error', err));
+  }
+
+  function disconnectHousehold(){
+    if(householdUnsub){ householdUnsub(); householdUnsub=null; }
+    householdCode = null;
+    localStorage.removeItem(HOUSEHOLD_KEY);
+    renderSyncStatus();
+  }
+
+  function renderSyncStatus(){
+    const statusEl = document.getElementById('sync-status');
+    const rowEl = document.getElementById('sync-row');
+    const discRow = document.getElementById('sync-disconnect-row');
+    const label = document.getElementById('sync-connected-label');
+    if(householdCode){
+      statusEl.style.display='none';
+      rowEl.style.display='none';
+      discRow.style.display='flex';
+      label.textContent = `Synced as "${householdCode}"`;
+    } else {
+      statusEl.style.display='block';
+      statusEl.textContent = 'Not synced — lists stay on this device only';
+      rowEl.style.display='flex';
+      discRow.style.display='none';
+    }
+  }
+
+  // ---------- helpers ----------
+  const genId = () => `${Date.now()}-${Math.random().toString(36).slice(2,9)}`;
+
+  function currentList(){
+    return lists.find(l=>l.id===currentListId) || null;
+  }
+
+  function capitalize(str){
+    return str.charAt(0).toUpperCase()+str.slice(1);
+  }
+
+  function isLikelyNoise(text){
+    if(text.length < 2) return true;
+    if(/^[^a-zA-Z0-9]+$/.test(text)) return true;
+    return false;
+  }
+
+  function parseOcrTextToItems(rawText){
+    const lines = rawText.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
+    const items = [];
+    for(const raw of lines){
+      let text = raw;
+      text = text.replace(/^[-*•●○□■✓✔]\s*/, '');
+      text = text.replace(/^\d+[\.\)]\s*/, '');
+      text = text.replace(/^\[\s?[xX]?\s?\]\s*/, '');
+      const qtyMatch = text.match(/^(\d+\s?(x|lbs?|kg|dozen|pack|pcs?)?)\s+(.*)/i);
+      const quantity = qtyMatch ? qtyMatch[1].trim() : null;
+      const itemText = qtyMatch ? qtyMatch[3].trim() : text.trim();
+      if(isLikelyNoise(itemText)) continue;
+      items.push({ id: genId(), text: capitalize(itemText), quantity, checked:false, photos:[] });
+    }
+    return items;
+  }
+
+  async function runCloudOCR(base64Image){
+    if(!GOOGLE_VISION_API_KEY || GOOGLE_VISION_API_KEY === 'YOUR_API_KEY_HERE'){
+      throw new Error('no-api-key');
+    }
+    const response = await fetch(
+      `https://vision.googleapis.com/v1/images:annotate?key=${GOOGLE_VISION_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          requests: [{
+            image: { content: base64Image },
+            features: [{ type: 'DOCUMENT_TEXT_DETECTION' }],
+          }],
+        }),
+      }
+    );
+    const data = await response.json();
+    if(data.error) throw new Error(data.error.message || 'vision-error');
+    return (data.responses && data.responses[0] && data.responses[0].fullTextAnnotation
+      && data.responses[0].fullTextAnnotation.text) || '';
+  }
+
+  function fileToDataUrl(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // ---------- crop screen ----------
+  let cropNaturalWidth = 0, cropNaturalHeight = 0;
+  let cropDrag = null; // {handle, startX, startY, startBox}
+
+  function pctBox(){
+    const stage = document.getElementById('crop-stage');
+    const box = document.getElementById('crop-box');
+    const sw = stage.clientWidth, sh = stage.clientHeight;
+    return {
+      left: box.offsetLeft / sw, top: box.offsetTop / sh,
+      right: (box.offsetLeft+box.offsetWidth) / sw, bottom: (box.offsetTop+box.offsetHeight) / sh
+    };
+  }
+
+  function applyBoxPx(px){
+    const box = document.getElementById('crop-box');
+    box.style.left = px.left+'px';
+    box.style.top = px.top+'px';
+    box.style.width = px.width+'px';
+    box.style.height = px.height+'px';
+  }
+
+  // ---------- name-first new list screen ----------
+  let pendingNewListName = null;
+
+  function openNewListScreen(){
+    document.getElementById('scan-card').style.display='none';
+    document.getElementById('scan-error').style.display='none';
+    document.getElementById('new-list-name-input').value = '';
+    document.getElementById('new-list-screen').style.display='block';
+    document.getElementById('new-list-name-input').focus();
+  }
+
+  function closeNewListScreen(){
+    document.getElementById('new-list-screen').style.display='none';
+  }
+
+  function startScanFromNewListScreen(){
+    pendingNewListName = document.getElementById('new-list-name-input').value.trim();
+    closeNewListScreen();
+    document.getElementById('photo-input').click();
+  }
+
+  function startTypeFromNewListScreen(){
+    const name = document.getElementById('new-list-name-input').value.trim();
+    closeNewListScreen();
+    openTypeScreen(name);
+  }
+
+  function startBlankFromNewListScreen(){
+    const name = document.getElementById('new-list-name-input').value.trim();
+    const newList = {
+      id: genId(),
+      name: name || new Date().toLocaleDateString(undefined, { month:'short', day:'numeric' }),
+      createdAt: Date.now(),
+      items: []
+    };
+    lists.unshift(newList);
+    currentListId = newList.id;
+    saveLists();
+    closeNewListScreen();
+    updateScanCardVisibility();
+    renderListsRow();
+    renderChecklist();
+  }
+
+  // ---------- type-a-list screen ----------
+  function openTypeScreen(prefillName){
+    document.getElementById('scan-card').style.display='none';
+    document.getElementById('scan-error').style.display='none';
+    document.getElementById('type-list-name').value = prefillName || '';
+    document.getElementById('type-list-textarea').value = '';
+    document.getElementById('type-screen').style.display='block';
+    (prefillName ? document.getElementById('type-list-textarea') : document.getElementById('type-list-name')).focus();
+  }
+
+  function closeTypeScreen(){
+    document.getElementById('type-screen').style.display='none';
+  }
+
+  function createTypedList(){
+    const nameInput = document.getElementById('type-list-name');
+    const textarea = document.getElementById('type-list-textarea');
+    const items = parseOcrTextToItems(textarea.value);
+    if(items.length === 0){
+      alert('Type at least one item, one per line.');
+      return;
+    }
+    const newList = {
+      id: genId(),
+      name: nameInput.value.trim() || new Date().toLocaleDateString(undefined, { month:'short', day:'numeric' }),
+      createdAt: Date.now(),
+      items
+    };
+    lists.unshift(newList);
+    currentListId = newList.id;
+    saveLists();
+    closeTypeScreen();
+    updateScanCardVisibility();
+    renderListsRow();
+    renderChecklist();
+  }
+
+  let cropMode = 'newlist'; // 'newlist' (feeds OCR) or 'itemphoto' (feeds a photo note)
+
+  async function openCropScreen(file, mode){
+    cropMode = mode || 'newlist';
+    const dataUrl = await fileToDataUrl(file);
+    const img = document.getElementById('crop-image');
+    await new Promise((resolve) => {
+      img.onload = resolve;
+      img.src = dataUrl;
+    });
+    cropNaturalWidth = img.naturalWidth;
+    cropNaturalHeight = img.naturalHeight;
+
+    document.getElementById('scan-card').style.display='none';
+    document.getElementById('scan-error').style.display='none';
+    document.getElementById('crop-screen').style.display='block';
+    document.getElementById('crop-cancel-btn').textContent = cropMode==='itemphoto' ? 'Use full photo' : 'Retake';
+    document.getElementById('crop-skip-photo-link').style.display = cropMode==='itemphoto' ? 'block' : 'none';
+    document.querySelector('#crop-screen .crop-hint').textContent = cropMode==='itemphoto'
+      ? 'Drag the corners to frame the photo note'
+      : 'Drag the corners to frame just the list';
+
+    // default crop box: 85% inset, centered
+    requestAnimationFrame(() => {
+      const stage = document.getElementById('crop-stage');
+      const sw = stage.clientWidth, sh = stage.clientHeight;
+      const inset = 0.075;
+      applyBoxPx({
+        left: sw*inset, top: sh*inset,
+        width: sw*(1-2*inset), height: sh*(1-2*inset)
+      });
+    });
+  }
+
+  function closeCropScreen(){
+    document.getElementById('crop-screen').style.display='none';
+    document.getElementById('crop-image').src = '';
+  }
+
+  function cropPointerDown(e, handle){
+    e.preventDefault();
+    const point = e.touches ? e.touches[0] : e;
+    const box = document.getElementById('crop-box');
+    cropDrag = {
+      handle, startX: point.clientX, startY: point.clientY,
+      startLeft: box.offsetLeft, startTop: box.offsetTop,
+      startWidth: box.offsetWidth, startHeight: box.offsetHeight
+    };
+  }
+
+  function cropPointerMove(e){
+    if(!cropDrag) return;
+    e.preventDefault();
+    const point = e.touches ? e.touches[0] : e;
+    const dx = point.clientX - cropDrag.startX;
+    const dy = point.clientY - cropDrag.startY;
+    const stage = document.getElementById('crop-stage');
+    const sw = stage.clientWidth, sh = stage.clientHeight;
+    const minSize = 40;
+    let { startLeft:left, startTop:top, startWidth:width, startHeight:height } = cropDrag;
+
+    if(cropDrag.handle==='se'){
+      width = Math.max(minSize, Math.min(width+dx, sw-left));
+      height = Math.max(minSize, Math.min(height+dy, sh-top));
+    } else if(cropDrag.handle==='nw'){
+      const newLeft = Math.max(0, Math.min(left+dx, left+width-minSize));
+      const newTop = Math.max(0, Math.min(top+dy, top+height-minSize));
+      width = width + (left-newLeft);
+      height = height + (top-newTop);
+      left = newLeft; top = newTop;
+    } else if(cropDrag.handle==='ne'){
+      const newTop = Math.max(0, Math.min(top+dy, top+height-minSize));
+      width = Math.max(minSize, Math.min(width+dx, sw-left));
+      height = height + (top-newTop);
+      top = newTop;
+    } else if(cropDrag.handle==='sw'){
+      const newLeft = Math.max(0, Math.min(left+dx, left+width-minSize));
+      width = width + (left-newLeft);
+      height = Math.max(minSize, Math.min(height+dy, sh-top));
+      left = newLeft;
+    }
+    applyBoxPx({ left, top, width, height });
+  }
+
+  function cropPointerUp(){ cropDrag = null; }
+
+  // Returns a full data: URL. Pass maxDim/quality to downscale (used for item
+  // photo notes, which get stored in localStorage/Firestore and should stay
+  // small); omit them to keep full resolution (used for the OCR scan path).
+  function cropToDataUrl(maxDim, quality){
+    const box = pctBox();
+    const sx = Math.round(box.left * cropNaturalWidth);
+    const sy = Math.round(box.top * cropNaturalHeight);
+    const sWidth = Math.round((box.right-box.left) * cropNaturalWidth);
+    const sHeight = Math.round((box.bottom-box.top) * cropNaturalHeight);
+    let outW = sWidth, outH = sHeight;
+    if(maxDim && Math.max(outW, outH) > maxDim){
+      const f = maxDim / Math.max(outW, outH);
+      outW = Math.round(outW*f);
+      outH = Math.round(outH*f);
+    }
+    const canvas = document.createElement('canvas');
+    canvas.width = outW;
+    canvas.height = outH;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(document.getElementById('crop-image'), sx, sy, sWidth, sHeight, 0, 0, outW, outH);
+    return canvas.toDataURL('image/jpeg', quality || 0.92);
+  }
+
+  function useFullImageNoCrop(){
+    const stage = document.getElementById('crop-stage');
+    applyBoxPx({ left:0, top:0, width: stage.clientWidth, height: stage.clientHeight });
+    return cropToDataUrl(640, 0.6);
+  }
+
+  async function handlePhotoCapture(base64){
+    document.getElementById('scan-card').style.display='none';
+    document.getElementById('scan-error').style.display='none';
+    document.getElementById('scan-progress').style.display='block';
+    try{
+      const rawText = await runCloudOCR(base64);
+      if(!rawText || !rawText.trim()){
+        throw new Error('No readable text found in that photo — try a clearer, well-lit shot.');
+      }
+      const items = parseOcrTextToItems(rawText);
+      const chosenName = (pendingNewListName || '').trim();
+      pendingNewListName = null;
+      const newList = {
+        id: genId(),
+        name: chosenName || new Date().toLocaleDateString(undefined, { month:'short', day:'numeric' }),
+        createdAt: Date.now(),
+        items
+      };
+      lists.unshift(newList);
+      currentListId = newList.id;
+      saveLists();
+      document.getElementById('scan-progress').style.display='none';
+      renderListsRow();
+      renderChecklist();
+    }catch(e){
+      console.error(e);
+      pendingNewListName = null;
+      document.getElementById('scan-progress').style.display='none';
+      const msgEl = document.getElementById('scan-error-msg');
+      if(e && e.message === 'no-api-key'){
+        msgEl.textContent = 'No Cloud Vision API key is set up yet for this app.';
+      } else {
+        msgEl.textContent = (e && e.message) ? e.message : "Try a clearer, well-lit shot.";
+      }
+      document.getElementById('scan-error').style.display='block';
+    }
+  }
+
+  // ---------- rendering ----------
+  function updateScanCardVisibility(){
+    document.getElementById('scan-card').style.display = lists.length ? 'none' : 'block';
+  }
+
+  function renderListsRow(){
+    const row = document.getElementById('list-row');
+    const countLabel = document.getElementById('list-count-label');
+    row.innerHTML = '';
+    countLabel.textContent = lists.length
+      ? `${lists.length} SAVED LIST${lists.length===1?'':'S'}`
+      : 'NO LISTS YET';
+    for(const l of lists){
+      const pill = document.createElement('div');
+      pill.className = 'list-pill' + (l.id===currentListId ? ' active' : '');
+      pill.textContent = l.name;
+      pill.addEventListener('click', () => {
+        if(l.id===currentListId){
+          openEditList(l);
+        } else {
+          currentListId = l.id;
+          closeEditList();
+          renderListsRow();
+          renderChecklist();
+        }
+      });
+      row.appendChild(pill);
+    }
+    const addPill = document.createElement('div');
+    addPill.className = 'list-pill add-pill';
+    addPill.textContent = '+ New';
+    addPill.addEventListener('click', () => { closeEditList(); openNewListScreen(); });
+    row.appendChild(addPill);
+
+    updateScanCardVisibility();
+  }
+
+  function openEditList(list){
+    const row = document.getElementById('edit-list-row');
+    const input = document.getElementById('edit-list-input');
+    input.value = list.name;
+    row.classList.add('open');
+  }
+  function closeEditList(){
+    document.getElementById('edit-list-row').classList.remove('open');
+  }
+
+  function renderChecklist(){
+    const wrap = document.getElementById('checklist');
+    const addRow = document.getElementById('add-item-row');
+    const rescan = document.getElementById('rescan-link');
+    const progressBox = document.getElementById('progress-box');
+    const list = currentList();
+
+    if(!list){
+      wrap.innerHTML = '<div class="empty-state">No list yet — scan a photo of a shopping list to get started.</div>';
+      addRow.style.display='none';
+      rescan.style.display='none';
+      progressBox.style.display='none';
       return;
     }
 
-    listEl.innerHTML = entries.sort((a,b) => new Date(b.date) - new Date(a.date))
-      .map(entry => `
-        <div class="entry-item">
-          <div>
-            <strong>${entry.date}</strong><br>
-            <small>${entry.notes || 'No notes'}</small>
-          </div>
-          <div>
-            ${entry.vacationHours ? `<strong>${entry.vacationHours} hrs</strong>` : '0 hrs'}
-          </div>
-        </div>
-      `).join('');
+    addRow.style.display='flex';
+    rescan.style.display='block';
+
+    const total = list.items.length;
+    const checkedCount = list.items.filter(i=>i.checked).length;
+    if(total>0){
+      progressBox.style.display='block';
+      document.getElementById('progress-text').textContent = `${checkedCount} of ${total} checked`;
+      document.getElementById('progress-fill').style.width = `${Math.round(checkedCount/total*100)}%`;
+    } else {
+      progressBox.style.display='none';
+    }
+
+    if(total===0){
+      wrap.innerHTML = '<div class="empty-state">No items in this list yet. Add one below.</div>';
+      return;
+    }
+
+    wrap.innerHTML = '';
+    for(const item of list.items){
+      const row = document.createElement('div');
+      row.className = 'item-row' + (item.checked ? ' checked' : '');
+
+      const check = document.createElement('div');
+      check.className = 'item-check';
+      check.textContent = '✓';
+      check.addEventListener('click', () => toggleItem(item.id));
+      row.appendChild(check);
+
+      const text = document.createElement('div');
+      text.className = 'item-text';
+      text.innerHTML = `<span class="item-name">${escapeHtml(item.text)}</span>`
+        + (item.quantity ? `<span class="item-qty">${escapeHtml(item.quantity)}</span>` : '');
+      text.addEventListener('click', () => startEditItem(item.id, row, text));
+      row.appendChild(text);
+
+      const photos = getItemPhotos(item);
+      if(photos.length){
+        const thumbWrap = document.createElement('div');
+        thumbWrap.className = 'item-photo-thumb-wrap';
+        const thumb = document.createElement('img');
+        thumb.className = 'item-photo-thumb';
+        thumb.src = photos[0];
+        thumb.addEventListener('click', () => openPhotoLightbox(item.id, 0));
+        thumbWrap.appendChild(thumb);
+        if(photos.length > 1){
+          const badge = document.createElement('div');
+          badge.className = 'item-photo-count';
+          badge.textContent = photos.length;
+          thumbWrap.appendChild(badge);
+        }
+        row.appendChild(thumbWrap);
+      }
+      const addPhoto = document.createElement('div');
+      addPhoto.className = 'item-photo-add';
+      addPhoto.textContent = photos.length ? '+' : '📷';
+      addPhoto.title = photos.length ? 'Add another photo' : 'Add a photo note';
+      addPhoto.addEventListener('click', () => triggerItemPhotoPicker(item.id));
+      row.appendChild(addPhoto);
+
+      const del = document.createElement('div');
+      del.className = 'item-del';
+      del.textContent = '×';
+      del.addEventListener('click', () => deleteItem(item.id));
+      row.appendChild(del);
+
+      wrap.appendChild(row);
+    }
   }
 
-  document.getElementById('ledgerForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const date = document.getElementById('entryDate').value;
-    const vacationHours = parseFloat(document.getElementById('vacationHours').value) || 0;
-    const notes = document.getElementById('notes').value;
+  function escapeHtml(s){
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
 
-    const entries = getStoredEntries();
-    entries.push({ date, vacationHours, notes });
-    saveEntries(entries);
+  function startEditItem(itemId, row, textEl){
+    const list = currentList();
+    const item = list.items.find(i=>i.id===itemId);
+    if(!item) return;
 
-    // Reset Form
-    document.getElementById('vacationHours').value = '';
-    document.getElementById('notes').value = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'item-edit-wrap';
+
+    const qtyInput = document.createElement('input');
+    qtyInput.className = 'item-edit-qty';
+    qtyInput.placeholder = 'qty';
+    qtyInput.value = item.quantity || '';
+
+    const textInput = document.createElement('input');
+    textInput.className = 'item-edit-input';
+    textInput.value = item.text;
+
+    wrap.appendChild(textInput);
+    wrap.appendChild(qtyInput);
+    row.replaceChild(wrap, textEl);
+    qtyInput.focus();
+    qtyInput.select();
+
+    let committed = false;
+    const commit = () => {
+      if(committed) return;
+      committed = true;
+      const v = textInput.value.trim();
+      if(v) item.text = capitalize(v);
+      const q = qtyInput.value.trim();
+      item.quantity = q || null;
+      saveLists();
+      renderChecklist();
+    };
+    // Commit only once focus truly leaves both fields — moving from one field
+    // to the other (e.g. tapping quantity right after text) must not trigger it.
+    wrap.addEventListener('focusout', () => {
+      setTimeout(() => {
+        if(!wrap.contains(document.activeElement)) commit();
+      }, 0);
+    });
+    qtyInput.addEventListener('keydown', e => { if(e.key==='Enter') textInput.focus(); });
+    textInput.addEventListener('keydown', e => { if(e.key==='Enter') textInput.blur(); });
+  }
+
+  function toggleItem(itemId){
+    const list = currentList();
+    const item = list.items.find(i=>i.id===itemId);
+    if(!item) return;
+    item.checked = !item.checked;
+    saveLists();
+    renderChecklist();
+  }
+
+  function deleteItem(itemId){
+    const list = currentList();
+    list.items = list.items.filter(i=>i.id!==itemId);
+    saveLists();
+    renderChecklist();
+  }
+
+  function addItemManually(text){
+    const list = currentList();
+    if(!list || !text.trim()) return;
+    list.items.push({ id: genId(), text: capitalize(text.trim()), quantity:null, checked:false, photos:[] });
+    saveLists();
+    renderChecklist();
+  }
+
+  // ---------- item photo notes ----------
+  let pendingPhotoItemId = null;
+  let itemPhotoQueue = [];
+  let itemPhotoQueueItemId = null;
+  let lightboxIndex = 0;
+
+  // Migrates the old single `photo` field (from before multi-photo support)
+  // into the `photos` array the first time an item is touched.
+  function getItemPhotos(item){
+    if(!item.photos){
+      item.photos = item.photo ? [item.photo] : [];
+      delete item.photo;
+    }
+    return item.photos;
+  }
+
+  function triggerItemPhotoPicker(itemId){
+    pendingPhotoItemId = itemId;
+    document.getElementById('item-photo-input').click();
+  }
+
+  function handleItemPhotosPicked(fileList){
+    if(!pendingPhotoItemId) return;
+    itemPhotoQueueItemId = pendingPhotoItemId;
+    itemPhotoQueue = Array.from(fileList);
+    pendingPhotoItemId = null;
+    processNextItemPhotoInQueue();
+  }
+
+  function processNextItemPhotoInQueue(){
+    if(itemPhotoQueue.length === 0){
+      itemPhotoQueueItemId = null;
+      updateScanCardVisibility();
+      return;
+    }
+    const file = itemPhotoQueue.shift();
+    openCropScreen(file, 'itemphoto');
+  }
+
+  function saveCroppedItemPhoto(dataUrl){
+    const list = currentList();
+    const item = list && list.items.find(i=>i.id===itemPhotoQueueItemId);
+    if(item){
+      getItemPhotos(item).push(dataUrl);
+      saveLists();
+      renderChecklist();
+    }
+    processNextItemPhotoInQueue();
+  }
+
+  function skipCurrentItemPhoto(){
+    processNextItemPhotoInQueue();
+  }
+
+  function openPhotoLightbox(itemId, index){
+    const list = currentList();
+    const item = list && list.items.find(i=>i.id===itemId);
+    if(!item) return;
+    const photos = getItemPhotos(item);
+    if(!photos.length) return;
+    lightboxIndex = index || 0;
+    document.getElementById('photo-lightbox').dataset.itemId = itemId;
+    renderLightboxImage();
+    document.getElementById('photo-lightbox').classList.add('open');
+  }
+
+  function renderLightboxImage(){
+    const itemId = document.getElementById('photo-lightbox').dataset.itemId;
+    const list = currentList();
+    const item = list && list.items.find(i=>i.id===itemId);
+    const photos = item ? getItemPhotos(item) : [];
+    if(!photos.length){ closePhotoLightbox(); return; }
+    if(lightboxIndex >= photos.length) lightboxIndex = photos.length - 1;
+    if(lightboxIndex < 0) lightboxIndex = 0;
+    document.getElementById('lightbox-img').src = photos[lightboxIndex];
+    document.getElementById('lightbox-counter').textContent = `${lightboxIndex+1} of ${photos.length}`;
+    const multi = photos.length > 1;
+    document.getElementById('lightbox-prev-btn').style.visibility = multi ? 'visible' : 'hidden';
+    document.getElementById('lightbox-next-btn').style.visibility = multi ? 'visible' : 'hidden';
+  }
+
+  function lightboxPrev(){ lightboxIndex--; renderLightboxImage(); }
+  function lightboxNext(){ lightboxIndex++; renderLightboxImage(); }
+
+  function closePhotoLightbox(){
+    document.getElementById('photo-lightbox').classList.remove('open');
+    document.getElementById('lightbox-img').src = '';
+  }
+
+  function removeCurrentLightboxPhoto(){
+    const itemId = document.getElementById('photo-lightbox').dataset.itemId;
+    const list = currentList();
+    const item = list && list.items.find(i=>i.id===itemId);
+    if(item){
+      const photos = getItemPhotos(item);
+      photos.splice(lightboxIndex, 1);
+      saveLists();
+      renderChecklist();
+      if(photos.length){
+        renderLightboxImage();
+        return;
+      }
+    }
+    closePhotoLightbox();
+  }
+
+  // ---------- wire up ----------
+  document.getElementById('scan-card').addEventListener('click', openNewListScreen);
+  document.getElementById('nl-cancel-btn').addEventListener('click', () => {
+    closeNewListScreen();
+    updateScanCardVisibility();
+  });
+  document.getElementById('nl-scan-btn').addEventListener('click', startScanFromNewListScreen);
+  document.getElementById('nl-type-btn').addEventListener('click', startTypeFromNewListScreen);
+  document.getElementById('nl-blank-btn').addEventListener('click', startBlankFromNewListScreen);
+
+  document.getElementById('type-cancel-btn').addEventListener('click', () => {
+    closeTypeScreen();
+    updateScanCardVisibility();
+  });
+  document.getElementById('type-create-btn').addEventListener('click', createTypedList);
+  document.getElementById('rescan-link').addEventListener('click', openNewListScreen);
+  document.getElementById('photo-input').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(file) openCropScreen(file);
+    e.target.value = '';
+  });
+  document.getElementById('scan-error-retry').addEventListener('click', () => {
+    document.getElementById('scan-error').style.display='none';
+    updateScanCardVisibility();
   });
 
-  // Initial Load
-  render();
+  document.getElementById('crop-cancel-btn').addEventListener('click', () => {
+    if(cropMode === 'itemphoto'){
+      const dataUrl = useFullImageNoCrop();
+      closeCropScreen();
+      saveCroppedItemPhoto(dataUrl);
+      return;
+    }
+    closeCropScreen();
+    if(pendingNewListName !== null){
+      document.getElementById('photo-input').click(); // retake, keep the name already entered
+    } else {
+      updateScanCardVisibility();
+    }
+  });
+  document.getElementById('crop-confirm-btn').addEventListener('click', () => {
+    if(cropMode === 'itemphoto'){
+      const dataUrl = cropToDataUrl(640, 0.6);
+      closeCropScreen();
+      saveCroppedItemPhoto(dataUrl);
+      return;
+    }
+    const fullDataUrl = cropToDataUrl();
+    closeCropScreen();
+    handlePhotoCapture(fullDataUrl.split(',')[1]);
+  });
+  document.getElementById('crop-skip-photo-link').addEventListener('click', () => {
+    closeCropScreen();
+    skipCurrentItemPhoto();
+  });
+  document.querySelectorAll('.crop-handle').forEach(h => {
+    const handle = h.dataset.handle;
+    h.addEventListener('mousedown', e => cropPointerDown(e, handle));
+    h.addEventListener('touchstart', e => cropPointerDown(e, handle), { passive:false });
+  });
+  window.addEventListener('mousemove', cropPointerMove);
+  window.addEventListener('touchmove', cropPointerMove, { passive:false });
+  window.addEventListener('mouseup', cropPointerUp);
+  window.addEventListener('touchend', cropPointerUp);
+
+  document.getElementById('edit-list-save').addEventListener('click', () => {
+    const list = currentList();
+    const v = document.getElementById('edit-list-input').value.trim();
+    if(list && v){ list.name = v; saveLists(); renderListsRow(); }
+    closeEditList();
+  });
+  document.getElementById('edit-list-cancel').addEventListener('click', closeEditList);
+  document.getElementById('edit-list-delete').addEventListener('click', () => {
+    const list = currentList();
+    if(!list) return;
+    if(!confirm(`Delete "${list.name}"? This can't be undone.`)) return;
+    lists = lists.filter(l=>l.id!==list.id);
+    currentListId = lists.length ? lists[0].id : null;
+    saveLists();
+    closeEditList();
+    renderListsRow();
+    renderChecklist();
+  });
+
+  document.getElementById('add-item-btn').addEventListener('click', () => {
+    const input = document.getElementById('add-item-input');
+    addItemManually(input.value);
+    input.value = '';
+    input.focus();
+  });
+  document.getElementById('add-item-input').addEventListener('keydown', (e) => {
+    if(e.key==='Enter'){
+      addItemManually(e.target.value);
+      e.target.value='';
+    }
+  });
+
+  document.getElementById('sync-connect-btn').addEventListener('click', () => {
+    connectHousehold(document.getElementById('sync-code-input').value);
+  });
+  document.getElementById('sync-disconnect-link').addEventListener('click', disconnectHousehold);
+
+  document.getElementById('item-photo-input').addEventListener('change', (e) => {
+    const files = e.target.files;
+    if(files && files.length) handleItemPhotosPicked(files);
+    e.target.value = '';
+  });
+  document.getElementById('lightbox-close-btn').addEventListener('click', closePhotoLightbox);
+  document.getElementById('lightbox-remove-btn').addEventListener('click', removeCurrentLightboxPhoto);
+  document.getElementById('lightbox-prev-btn').addEventListener('click', lightboxPrev);
+  document.getElementById('lightbox-next-btn').addEventListener('click', lightboxNext);
+
+  // swipe left/right to move between an item's photos
+  (function(){
+    const stage = document.querySelector('.photo-lightbox-stage');
+    let touchStartX = null, touchStartY = null;
+    stage.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive:true });
+    stage.addEventListener('touchend', (e) => {
+      if(touchStartX===null) return;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      touchStartX = null; touchStartY = null;
+      // require a mostly-horizontal swipe past a small threshold, so a vertical
+      // drag (e.g. accidental scroll) doesn't get mistaken for a page change
+      if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)*1.5){
+        if(dx < 0) lightboxNext(); else lightboxPrev();
+      }
+    }, { passive:true });
+  })();
+  document.getElementById('photo-lightbox').addEventListener('click', (e) => {
+    if(e.target.id === 'photo-lightbox') closePhotoLightbox();
+  });
+
+  // ---------- init ----------
+  function init(){
+    const savedCode = localStorage.getItem(HOUSEHOLD_KEY);
+    if(savedCode){
+      householdCode = savedCode;
+      attachHouseholdListener();
+    }
+    renderSyncStatus();
+    renderListsRow();
+    renderChecklist();
+  }
+
+  init();
+})();
 </script>
 </body>
 </html>
