@@ -257,6 +257,18 @@
   }
   .sync-connected-label{color:var(--cart);}
   .sync-disconnect-link{color:var(--del);text-decoration:underline;cursor:pointer;}
+
+  .loc-field-wrap{position:relative;}
+  .location-suggestions{
+    display:none;position:absolute;top:100%;left:0;right:0;margin-top:4px;
+    background:var(--card);border:1px solid var(--grid-line);border-radius:10px;
+    max-height:170px;overflow-y:auto;box-shadow:0 6px 18px rgba(20,26,22,.14);z-index:40;
+  }
+  .location-suggestions.open{display:block;}
+  .location-suggestion-item{
+    padding:9px 12px;font-family:-apple-system,sans-serif;font-size:14px;color:var(--ink);cursor:pointer;
+  }
+  .location-suggestion-item:active{background:var(--paper);}
 </style>
 </head>
 <body>
@@ -266,7 +278,10 @@
     <h1>Shopping Cart</h1>
     <div class="list-row" id="list-row"></div>
     <div class="edit-list-row" id="edit-list-row">
-      <input type="text" id="edit-list-input" list="location-history-list" placeholder="List name" maxlength="30">
+      <div class="loc-field-wrap" style="flex:1;min-width:120px;">
+        <input type="text" id="edit-list-input" placeholder="List name" maxlength="30" style="width:100%;">
+        <div class="location-suggestions" id="edit-list-input-suggestions"></div>
+      </div>
       <button id="edit-list-save">Save</button>
       <button class="el-delete" id="edit-list-delete">Delete</button>
       <button class="el-cancel" id="edit-list-cancel">Cancel</button>
@@ -282,7 +297,10 @@
 
   <div id="new-list-screen" class="crop-screen" style="display:none;">
     <p class="crop-hint">Name this list, then choose how to fill it in</p>
-    <input type="text" id="new-list-name-input" list="location-history-list" placeholder="List name (e.g. Costco, Walmart)" style="width:100%;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid var(--grid-line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);margin-bottom:12px;">
+    <div class="loc-field-wrap" style="margin-bottom:12px;">
+      <input type="text" id="new-list-name-input" placeholder="List name (e.g. Costco, Walmart)" style="width:100%;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid var(--grid-line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);">
+      <div class="location-suggestions" id="new-list-name-input-suggestions"></div>
+    </div>
     <div class="crop-actions">
       <button class="crop-confirm" id="nl-scan-btn">📷 Scan a list</button>
       <button class="crop-confirm" id="nl-type-btn">✏️ Type items</button>
@@ -295,7 +313,10 @@
 
   <div id="type-screen" class="crop-screen" style="display:none;">
     <p class="crop-hint">One item per line — quantities like "2 lbs" or "3x" are picked up automatically</p>
-    <input type="text" id="type-list-name" list="location-history-list" placeholder="List name (e.g. Costco)" style="width:100%;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid var(--grid-line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);margin-bottom:10px;">
+    <div class="loc-field-wrap" style="margin-bottom:10px;">
+      <input type="text" id="type-list-name" placeholder="List name (e.g. Costco)" style="width:100%;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid var(--grid-line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);">
+      <div class="location-suggestions" id="type-list-name-suggestions"></div>
+    </div>
     <textarea id="type-list-textarea" placeholder="2 lbs chicken breast&#10;Milk&#10;3 apples&#10;Paper towels" style="width:100%;min-height:140px;font-family:-apple-system,sans-serif;font-size:14px;border:1px solid var(--grid-line);border-radius:10px;padding:10px 12px;background:var(--card);color:var(--ink);resize:vertical;"></textarea>
     <div class="crop-actions">
       <button class="crop-cancel" id="type-cancel-btn">Cancel</button>
@@ -361,8 +382,6 @@
     </div>
   </div>
 </div>
-
-<datalist id="location-history-list"></datalist>
 
 <div class="photo-lightbox" id="photo-lightbox">
   <div class="photo-lightbox-stage">
@@ -432,18 +451,46 @@
     hist.unshift(name);
     if(hist.length > 20) hist = hist.slice(0, 20);
     storageSet(LOCATIONS_KEY, hist);
-    renderLocationDatalist();
   }
 
-  function renderLocationDatalist(){
-    const dl = document.getElementById('location-history-list');
-    dl.innerHTML = '';
-    for(const name of getLocationHistory()){
-      const opt = document.createElement('option');
-      opt.value = name;
-      dl.appendChild(opt);
+  // Custom dropdown instead of the native <datalist> — iOS Safari's datalist
+  // support has long been unreliable (and worse in some recent versions),
+  // especially inside home-screen web apps, so this is built by hand instead.
+  function attachLocationAutocomplete(inputId, boxId){
+    const input = document.getElementById(inputId);
+    const box = document.getElementById(boxId);
+    if(!input || !box) return;
+
+    function showFiltered(){
+      const q = input.value.trim().toLowerCase();
+      const hist = getLocationHistory();
+      const matches = (q ? hist.filter(h => h.toLowerCase().includes(q)) : hist).slice(0, 8);
+      if(!matches.length){
+        box.classList.remove('open');
+        box.innerHTML = '';
+        return;
+      }
+      box.innerHTML = '';
+      for(const name of matches){
+        const item = document.createElement('div');
+        item.className = 'location-suggestion-item';
+        item.textContent = name;
+        // pointerdown (not click) so this fires before the input's blur hides the box
+        item.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          input.value = name;
+          box.classList.remove('open');
+        });
+        box.appendChild(item);
+      }
+      box.classList.add('open');
     }
+
+    input.addEventListener('focus', showFiltered);
+    input.addEventListener('input', showFiltered);
+    input.addEventListener('blur', () => setTimeout(() => box.classList.remove('open'), 150));
   }
+
 
   const HOUSEHOLD_KEY = LS_PREFIX+'household-code';
   let householdCode = null;
@@ -1325,7 +1372,9 @@
       attachHouseholdListener();
     }
     renderSyncStatus();
-    renderLocationDatalist();
+    attachLocationAutocomplete('new-list-name-input', 'new-list-name-input-suggestions');
+    attachLocationAutocomplete('type-list-name', 'type-list-name-suggestions');
+    attachLocationAutocomplete('edit-list-input', 'edit-list-input-suggestions');
     renderListsRow();
     renderChecklist();
   }
