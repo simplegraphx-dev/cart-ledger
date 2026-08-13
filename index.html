@@ -266,9 +266,15 @@
   }
   .location-suggestions.open{display:block;}
   .location-suggestion-item{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
     padding:9px 12px;font-family:-apple-system,sans-serif;font-size:14px;color:var(--ink);cursor:pointer;
   }
   .location-suggestion-item:active{background:var(--paper);}
+  .location-suggestion-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .location-suggestion-del{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--ink-soft);
+    padding:2px 6px;cursor:pointer;
+  }
 </style>
 </head>
 <body>
@@ -453,6 +459,11 @@
     storageSet(LOCATIONS_KEY, hist);
   }
 
+  function removeLocation(name){
+    const hist = getLocationHistory().filter(h => h.toLowerCase() !== name.toLowerCase());
+    storageSet(LOCATIONS_KEY, hist);
+  }
+
   // Custom dropdown instead of the native <datalist> — iOS Safari's datalist
   // support has long been unreliable (and worse in some recent versions),
   // especially inside home-screen web apps, so this is built by hand instead.
@@ -474,13 +485,30 @@
       for(const name of matches){
         const item = document.createElement('div');
         item.className = 'location-suggestion-item';
-        item.textContent = name;
+
+        const nameEl = document.createElement('span');
+        nameEl.className = 'location-suggestion-name';
+        nameEl.textContent = name;
         // pointerdown (not click) so this fires before the input's blur hides the box
-        item.addEventListener('pointerdown', (e) => {
+        nameEl.addEventListener('pointerdown', (e) => {
           e.preventDefault();
           input.value = name;
           box.classList.remove('open');
         });
+        item.appendChild(nameEl);
+
+        const delEl = document.createElement('span');
+        delEl.className = 'location-suggestion-del';
+        delEl.textContent = '×';
+        delEl.title = 'Remove from suggestions';
+        delEl.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          removeLocation(name);
+          showFiltered(); // stay open, refreshed without the removed entry
+        });
+        item.appendChild(delEl);
+
         box.appendChild(item);
       }
       box.classList.add('open');
