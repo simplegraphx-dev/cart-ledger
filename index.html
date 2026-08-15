@@ -494,6 +494,7 @@
           e.preventDefault();
           input.value = name;
           box.classList.remove('open');
+          input.blur(); // dismiss the keyboard so buttons below aren't hidden behind it
         });
         item.appendChild(nameEl);
 
