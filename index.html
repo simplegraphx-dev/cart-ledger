@@ -472,6 +472,25 @@
     const box = document.getElementById(boxId);
     if(!input || !box) return;
 
+    // Binds a tap handler that reliably prevents the browser's follow-up
+    // synthetic click from "falling through" to whatever element becomes
+    // visible underneath once this dropdown closes (an iOS Safari quirk —
+    // preventDefault on pointerdown alone doesn't suppress that click).
+    function bindTap(el, handler){
+      let touched = false;
+      el.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        touched = true;
+        handler();
+        setTimeout(() => { touched = false; }, 500);
+      }, { passive:false });
+      el.addEventListener('mousedown', (e) => {
+        if(touched) return;
+        e.preventDefault();
+        handler();
+      });
+    }
+
     function showFiltered(){
       const q = input.value.trim().toLowerCase();
       const hist = getLocationHistory();
@@ -489,9 +508,7 @@
         const nameEl = document.createElement('span');
         nameEl.className = 'location-suggestion-name';
         nameEl.textContent = name;
-        // pointerdown (not click) so this fires before the input's blur hides the box
-        nameEl.addEventListener('pointerdown', (e) => {
-          e.preventDefault();
+        bindTap(nameEl, () => {
           input.value = name;
           box.classList.remove('open');
           input.blur(); // dismiss the keyboard so buttons below aren't hidden behind it
@@ -509,9 +526,7 @@
         delEl.className = 'location-suggestion-del';
         delEl.textContent = '×';
         delEl.title = 'Remove from suggestions';
-        delEl.addEventListener('pointerdown', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
+        bindTap(delEl, () => {
           removeLocation(name);
           showFiltered(); // stay open, refreshed without the removed entry
         });
