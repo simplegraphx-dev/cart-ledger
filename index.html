@@ -457,11 +457,13 @@
     hist.unshift(name);
     if(hist.length > 20) hist = hist.slice(0, 20);
     storageSet(LOCATIONS_KEY, hist);
+    pushToCloud();
   }
 
   function removeLocation(name){
     const hist = getLocationHistory().filter(h => h.toLowerCase() !== name.toLowerCase());
     storageSet(LOCATIONS_KEY, hist);
+    pushToCloud();
   }
 
   // Custom dropdown instead of the native <datalist> — iOS Safari's datalist
@@ -562,6 +564,7 @@
     try{
       await db.collection('cart-households').doc(householdCode).set({
         lists,
+        locations: getLocationHistory(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge:false });
     }catch(e){ console.error('Cloud sync failed', e); }
@@ -573,6 +576,9 @@
     try{
       lists = data.lists;
       storageSet(LISTS_KEY, lists);
+      if(Array.isArray(data.locations)){
+        storageSet(LOCATIONS_KEY, data.locations);
+      }
       if(!lists.some(l=>l.id===currentListId)){
         currentListId = lists.length ? lists[0].id : null;
       }
