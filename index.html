@@ -444,6 +444,17 @@
   let lists = storageGet(LISTS_KEY) || [];
   let currentListId = lists.length ? lists[0].id : null;
 
+  // If a remote sync update arrives before it's caught up with a list we just
+  // created locally, applying it would look like the new list "disappeared."
+  // This tracks that case so such an update gets ignored instead of applied.
+  let pendingLocalListId = null;
+  let pendingLocalListTimer = null;
+  function markPendingLocalList(id){
+    pendingLocalListId = id;
+    if(pendingLocalListTimer) clearTimeout(pendingLocalListTimer);
+    pendingLocalListTimer = setTimeout(() => { pendingLocalListId = null; }, 10000);
+  }
+
   const LOCATIONS_KEY = 'locations';
 
   function getLocationHistory(){
@@ -572,6 +583,10 @@
 
   function applyRemoteData(data){
     if(!data || !Array.isArray(data.lists)) return;
+    if(pendingLocalListId && !data.lists.some(l=>l.id===pendingLocalListId)){
+      return; // this snapshot hasn't caught up with our new list yet — skip it
+    }
+    if(pendingLocalListId) pendingLocalListId = null; // caught up, safe to clear
     applyingRemote = true;
     try{
       lists = data.lists;
@@ -775,6 +790,7 @@
     };
     lists.unshift(newList);
     currentListId = newList.id;
+    markPendingLocalList(newList.id);
     saveLists();
     closeNewListScreen();
     updateScanCardVisibility();
@@ -813,6 +829,7 @@
     };
     lists.unshift(newList);
     currentListId = newList.id;
+    markPendingLocalList(newList.id);
     saveLists();
     closeTypeScreen();
     updateScanCardVisibility();
@@ -955,6 +972,7 @@
       };
       lists.unshift(newList);
       currentListId = newList.id;
+      markPendingLocalList(newList.id);
       saveLists();
       document.getElementById('scan-progress').style.display='none';
       renderListsRow();
