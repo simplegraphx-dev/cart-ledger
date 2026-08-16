@@ -1007,6 +1007,9 @@
     addPill.addEventListener('click', () => { closeEditList(); openNewListScreen(); });
     row.appendChild(addPill);
 
+    const activePill = row.querySelector('.list-pill.active');
+    if(activePill) activePill.scrollIntoView({ block:'nearest', inline:'nearest' });
+
     updateScanCardVisibility();
   }
 
