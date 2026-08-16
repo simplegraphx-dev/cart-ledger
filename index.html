@@ -495,6 +495,13 @@
           input.value = name;
           box.classList.remove('open');
           input.blur(); // dismiss the keyboard so buttons below aren't hidden behind it
+          // iOS can scroll the page oddly as the keyboard closes — pull the
+          // card back into view once that settles so it doesn't look like
+          // the screen vanished.
+          setTimeout(() => {
+            const screen = input.closest('.crop-screen');
+            if(screen) screen.scrollIntoView({ block:'nearest' });
+          }, 120);
         });
         item.appendChild(nameEl);
 
@@ -580,7 +587,8 @@
       renderSyncStatus();
     }catch(e){
       console.error(e);
-      alert('Could not connect — check your connection and try again.');
+      const detail = (e && e.code) ? `${e.code}${e.message ? ': '+e.message : ''}` : (e && e.message) || 'Unknown error';
+      alert('Could not connect — ' + detail);
     }
     document.getElementById('sync-connect-btn').textContent = 'Connect';
   }
